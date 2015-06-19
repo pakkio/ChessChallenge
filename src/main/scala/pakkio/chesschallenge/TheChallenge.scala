@@ -1,9 +1,13 @@
 package pakkio.chesschallenge
 
 
-case class Slot(x:Int,y:Int)
-case class Piece(s:Symbol)
-case class PieceAtSlot(p:Piece, s:Slot)
+case class Slot(x:Int,y:Int){
+  //println("Allocating slot "+x+"-"+y)
+}
+
+
+
+case class PieceAtSlot(piece:Piece, slot:Slot)
 case class Pieces(list:Map[Piece,Int])
 
 case class Board(m:Int,n:Int, content:List[PieceAtSlot]=Nil) {
@@ -12,53 +16,32 @@ case class Board(m:Int,n:Int, content:List[PieceAtSlot]=Nil) {
       p <- content
       slot <- attackedSlots(p)
     } yield( slot )
+    println(attacked)
     attacked.contains(s)
   }
   
   def attackedSlots(p: PieceAtSlot) : List[Slot] = {
-    val piece=p.p
-    val s=p.s
-
-    piece match {
-      case Piece('king) =>
-        // king moves on every 8 positions around
-        val l=for {
-          x <- s.x - 1 to s.x + 1
-          y <- s.y - 1 to s.y + 1
-          slot = Slot(x, y)
-          if (canMoveHere(slot))
-        } yield (slot)
-
-        l.toList
-
-
-      case Piece('rook) =>
-        // initial implementation naif not contemplating "shadowed" pieces
-        val l=for {
-          x <- 0 until m
-          y <- 0 until n
-          slot = Slot(x,y)
-          if(x==s.x && y==s.y && canMoveHere(slot))
-
-        } yield(slot)
-        l.toList
-
-
-        // not yet implemented
-      case _ => Nil
-        ???
-
-    }
+    val piece=p.piece
+    val s=p.slot
+    
+      // gets a path (List of Slots)
+    piece.getPaths(this, s).flatten
+      // currently don't handle shadowing
+      // probably with stream span we can handle it
+      // ==> path.map(slot => (slot,isValidPosition(s),))toStream.span()
+      
+   
   }
 
 
-  // this returns either a List of 1 element of Nothing
-  def getPieceAtPosition(pFind:Slot):List[Piece] = {
-    content.filter( _.s == pFind ).map(_.p)
+  // this returns an option if a piece is there
+  def getPieceAtPosition(pFind:Slot):Option[Piece] = {
+    content.filter( _.slot == pFind ).map(_.piece).headOption
   }
-  def canMoveHere(s:Slot):Boolean = {
-    (s.x >= 0 && s.x < m && s.y>=0 && s.y<n && getPieceAtPosition(s)==Nil)
-  }
+  // canMoveHere can also tell if a piece is there
+  def isValidPosition(s:Slot)  = 
+    s.x >= 0 && s.x < m && s.y>=0 && s.y<n
+  
   // create a new Board with added piece
   def addAPiece(p:PieceAtSlot) = {
     Board(m,n,p::content)
@@ -69,7 +52,7 @@ case class Board(m:Int,n:Int, content:List[PieceAtSlot]=Nil) {
     j<- 0 until n
     pos = Slot(i,j)
     p = getPieceAtPosition(pos)
-    if(p==Nil)
+    if(p==None)
   } yield(pos)
 }
 
