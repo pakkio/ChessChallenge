@@ -29,7 +29,7 @@ trait RookAlike extends Piece {
     } yield (slot)
     
     val l2 = for {
-      i <- 0 until starting.x
+      i <- starting.x -1 to 0 by -1
       slot = Slot(i, starting.y)
       if (b.isValidPosition(slot))
     } yield (slot)
@@ -41,7 +41,7 @@ trait RookAlike extends Piece {
     } yield (slot)
     
     val l4 = for {
-      j <- 0 until starting.y
+      j <- starting.y - 1 to 0 by -1
       slot = Slot(starting.x,j)
       if (b.isValidPosition(slot))
     } yield (slot)
@@ -54,36 +54,50 @@ class Rook extends RookAlike
 
 trait BishopAlike extends Piece {
   def getPaths (b: Board, starting: Slot) = {
+    
+    // moving on the upper right diagonal
     val l1 = for {
       i <- starting.x + 1 until Math.max(b.m,b.n)
       delta = i - starting.x
       slot = Slot(i, starting.y + delta )
       if (b.isValidPosition(slot))
-    } yield (slot)
+      
+    } yield (d(slot))
     
+    // moving on the lower left diagonal
     val l2 = for {
-      i <- 0 until starting.x
+      i <- starting.x -1 to 0 by -1
       delta = starting.x - i
       slot = Slot(i, starting.y - delta)
       if (b.isValidPosition(slot))
-    } yield (slot)
+    } yield (d(slot))
     
+    // moving on the top left diagonal
     val l3 = for {
       j <- starting.y + 1 until Math.max(b.n,b.m)
       delta = starting.y - j
       slot = Slot(starting.x + delta ,j)
       if (b.isValidPosition(slot))
-    } yield (slot)
+    } yield (d(slot))
     
+    // moving on the right bottom diagonal
     val l4 = for {
-      j <- 0 until starting.y
+      j <- starting.y -1  to 0 by -1
       delta = starting.y - j
-      slot = Slot(starting.x - delta,j)
+      slot = Slot(starting.x + delta,j)
       if (b.isValidPosition(slot))
-    } yield (slot)
+    } yield (d(slot))
     
     
-    List(l1.toList,l2.toList,l3.toList,l4.toList)
+    val ret=List(l1.toList,l2.toList,l3.toList,l4.toList)
+    
+    ret
+  }
+
+  def d(slot:Slot) = {
+    // possibly for debugging
+    // println(slot)
+    slot
   }
 }
 class Bishop extends BishopAlike

@@ -46,17 +46,30 @@ class SecondSession_AddingPiecesAndNaiveMoving extends FunSuite {
   }
   
   test("Test knight"){
-    val b=Board(3,3,List(PieceAtSlot(new Knight,Slot(0,0))))
-    assert(b.attacks(Slot(1,2))==true)
-    assert(b.attacks(Slot(2,1))==true)
-    assert(b.attacks(Slot(1,1))==false)
+    val b=Board(4,4,List())
+    val attacked=b.attackedSlots(PieceAtSlot(new Knight,Slot(0,0)))
+    assert(attacked==List(Slot(1,2),Slot(2,1)))
   }
   
   test("Test rook"){
-    val b=Board(3,3,List(PieceAtSlot(new Rook,Slot(1,1))))
-    assert(b.attacks(Slot(0,0))==false)
-    assert(b.attacks(Slot(0,1))==true)
-    assert(b.attacks(Slot(1,0))==true)
+    val b=Board(7,7,List())
+    val attacked=b.attackedSlots(PieceAtSlot(new Rook,Slot(1,1)))
+     assert(attacked==List(
+        Slot(2,1), Slot(3,1), Slot(4,1), Slot(5,1), Slot(6,1), 
+        Slot(0,1), 
+        Slot(1,2), Slot(1,3), Slot(1,4), Slot(1,5), Slot(1,6), 
+        Slot(1,0)))
+  }
+  
+  test("Test bishop"){
+    val b=Board(7,7,List())
+    val attacked=b.attackedSlots(PieceAtSlot(new Bishop,Slot(1,1)))
+    assert(attacked==List(
+        Slot(2,2), Slot(3,3), Slot(4,4), Slot(5,5), Slot(6,6), 
+        Slot(0,0), 
+        Slot(0,2), 
+        Slot(2,0)))
+    
   }
 
 
