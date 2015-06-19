@@ -57,6 +57,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
   // create a new Board with added piece
   def addAPiece(p: PieceAtSlot) = {
+      println("adding piece "+p.piece+" at slot "+p.slot)
     Board(m, n, p :: content)
   }
 
