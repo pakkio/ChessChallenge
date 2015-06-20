@@ -15,10 +15,10 @@ class ThirdSession_Shadowing extends FunSuite {
     //  tRtt
     //  -t-- 
     val b = Board(4, 3, content = List(
-      PieceAtSlot(new Rook, Slot(1, 1)),
-      PieceAtSlot(new Bishop, Slot(1, 2))))
+      PieceAtSlot(Rook, Slot(1, 1)),
+      PieceAtSlot(Bishop, Slot(1, 2))))
     // the paths from Rook should NOT contain slot(1,3) since it is shadowed by the Bishop
-    assert(b.attackedSlots(PieceAtSlot(new Rook, Slot(1, 1)))==
+    assert(b.attackedSlots(PieceAtSlot(Rook, Slot(1, 1)))==
       List(Slot(2,1), Slot(3,1), Slot(0,1), Slot(1,0)))
   }
   test("ensure 'shadowing' from a Bishop") {
@@ -29,9 +29,9 @@ class ThirdSession_Shadowing extends FunSuite {
     //  t-R--- 
     //  --f--- 
     val b = Board(7, 7, content = List(
-      PieceAtSlot(new Rook, Slot(2, 1)),
-      PieceAtSlot(new Bishop, Slot(1, 2))))
-    assert(b.attackedSlots(PieceAtSlot(new Bishop, Slot(1, 2)))==
+      PieceAtSlot(Rook, Slot(2, 1)),
+      PieceAtSlot(Bishop, Slot(1, 2))))
+    assert(b.attackedSlots(PieceAtSlot(Bishop, Slot(1, 2)))==
       List(Slot(2,3), Slot(3,4), Slot(4,5), Slot(5,6), 
           Slot(0,1), 
           Slot(0,3)))
@@ -45,9 +45,9 @@ class ThirdSession_Shadowing extends FunSuite {
     //  -ttR-- 
     //  t-t-f- 
     val b = Board(7, 7, content = List(
-      PieceAtSlot(new Rook, Slot(3, 1)),
-      PieceAtSlot(new Queen, Slot(2, 2))))
-    assert(b.attackedSlots(PieceAtSlot(new Queen, Slot(2, 2)))==
+      PieceAtSlot(Rook, Slot(3, 1)),
+      PieceAtSlot(Queen, Slot(2, 2))))
+    assert(b.attackedSlots(PieceAtSlot(Queen, Slot(2, 2)))==
       List(Slot(3,2), Slot(4,2), Slot(5,2), Slot(6,2), 
           Slot(1,2), Slot(0,2), 
           Slot(2,3), Slot(2,4), Slot(2,5), Slot(2,6), 

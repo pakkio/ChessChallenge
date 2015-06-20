@@ -1,10 +1,12 @@
 package pakkio.chesschallenge
 
 abstract sealed class Piece {
+  val shortName:String
   // each piece can define some paths in a board where to move
   def getPaths(b: Board, starting: Slot): List[List[Slot]]
 }
-class King extends Piece {
+object King extends Piece {
+  override val shortName="Ki"
   // King returns up to 7 possible paths
   def getPaths(b: Board, starting: Slot) = {
     val l = for {
@@ -19,6 +21,7 @@ class King extends Piece {
   }
 }
 trait RookAlike extends Piece {
+  override val shortName="Ro"
   // a rook can have up to 4 possible paths
   def getPaths(b: Board, starting: Slot) = {
 
@@ -50,9 +53,10 @@ trait RookAlike extends Piece {
     List(l1.toList,l2.toList,l3.toList,l4.toList)
   }
 }
-class Rook extends RookAlike 
+object Rook extends RookAlike 
 
 trait BishopAlike extends Piece {
+  override val shortName = "Bi"
   def getPaths (b: Board, starting: Slot) = {
     
     // moving on the upper right diagonal
@@ -100,9 +104,10 @@ trait BishopAlike extends Piece {
     slot
   }
 }
-class Bishop extends BishopAlike
+object Bishop extends BishopAlike
 
-class Knight extends Piece {
+object Knight extends Piece {
+  override val shortName="Kn"
   // Knight can move at "L" so precomputing all the positions where it can go
   def getPaths(b: Board, starting: Slot) = {
     val knightDirs = Seq((1, 2), (2, 1), (-1, 2), (-2, 1), (1, -2), (2, -1), (-1, -2), (-2, -1))
@@ -119,11 +124,12 @@ class Knight extends Piece {
   }
     
 }
-class Queen extends RookAlike with BishopAlike {
+object Queen extends RookAlike with BishopAlike {
+  override val shortName="Qu"
   // Queen has a multiple inheritance approach to path:
   // we combine the 4 orthogonal paths of rook with the 4 diagonal paths of Bishop
   override def getPaths (b: Board, starting: Slot) =
   super[RookAlike].getPaths(b, starting) ++ super[BishopAlike].getPaths(b, starting)
 }
-object Knight 
+
 

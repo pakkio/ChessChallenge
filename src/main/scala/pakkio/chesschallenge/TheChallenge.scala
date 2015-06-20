@@ -1,5 +1,6 @@
 package pakkio.chesschallenge
 
+
 // a slot simply is defined by its horizontal and vertical coordinates
 // x going right, y going up
 case class Slot(x: Int, y: Int)
@@ -25,20 +26,18 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
   // find out which slots are attacked by a piece in a specified slot
   def attackedSlots(p: PieceAtSlot): List[Slot] = {
-
-    
-
+    // to be able to TakeWhileInclusive otherwise we will need to have scalaz
+    import ImplicitIterator._
     val piece = p.piece
     val s = p.slot
 
-    val list=for {
+    val list = for {
 
       // gets one of the possible paths
       p <- piece.getPaths(this, s)
-    } yield (p.takeWhile(isFree))
-     
-      
-    val ret=list.flatten
+    } yield (p.toIterator.takeWhileInclusive(isFree).toList)
+
+    val ret = list.flatten
     ret
   }
 
@@ -46,9 +45,9 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
   def getPieceAtPosition(pFind: Slot): Option[Piece] = {
     content.filter(_.slot == pFind).map(_.piece).headOption
   }
-  
+
   // check if a slot is free (inverse of the previous function)
-  def isFree(pFind:Slot):Boolean = {
+  def isFree(pFind: Slot): Boolean = {
     getPieceAtPosition(pFind) == None
   }
   // canMoveHere just check if position in inside the board
@@ -57,7 +56,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
   // create a new Board with added piece
   def addAPiece(p: PieceAtSlot) = {
-      println("adding piece "+p.piece+" at slot "+p.slot)
+    //println("adding piece " + p.piece + " at slot " + p.slot)
     Board(m, n, p :: content)
   }
 
@@ -69,9 +68,31 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
     p = getPieceAtPosition(pos)
     if (p == None)
   } yield (pos)
+
+  def mkElement(p: Option[Piece]) = {
+    p match {
+      case None    => "--"
+      case Some(p) => p.shortName
+    }
+  }
+
+  def mkLine(r: Int) = {
+    val l = for {
+      c <- 0 until m
+      p = getPieceAtPosition(Slot(c, r))
+    } yield mkElement(p)
+    val ret=l.toList.mkString(" ") + "\n "
+    ret
+
+  }
+
+  def printBoard(s: String) =
+    {
+      val l = for {
+        r <- n - 1 to 0 by -1
+      } yield mkLine(r)
+      val ret=l.toList.mkString(" ", "", "")
+      println(ret)
+    }
+
 }
-
-
-
-
-

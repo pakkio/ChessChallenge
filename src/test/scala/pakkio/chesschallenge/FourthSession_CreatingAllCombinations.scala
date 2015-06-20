@@ -14,7 +14,7 @@ class FourthSession_CreatingAllCombinations extends FunSuite {
   def placePieces(l:List[Piece]): Solutions = {
     
     l match {
-      case List() => { List(Board(3,3)) }
+      case List() => { List(Board(4,4)) }
       case piece :: rest => 
         println("Processing piece: "+piece)
         for {
@@ -32,9 +32,9 @@ class FourthSession_CreatingAllCombinations extends FunSuite {
     }
   }
 
-  test("create all combinations with some queens") {
-   val b=Board(3,3)
-   val piecesToInsert:Pieces = Pieces(Map(new Queen -> 2))
+  test("create all combinations with some queens and a King") {
+   
+   val piecesToInsert:Pieces = Pieces(Map(Queen -> 1, Knight -> 1, King -> 1, Rook -> 1, Bishop -> 1))
    
    // obtain a list of all the pieces to insert from the map
    // flattening down the count to proper repetition of the piece
@@ -49,7 +49,10 @@ class FourthSession_CreatingAllCombinations extends FunSuite {
    
    val result = placePieces(pieceList.toList)
      println(s"Number of elements in list : ${result.size}")
-    println(result.toList)
+    for {
+      board <- result
+      
+    } yield board.printBoard("")
   }
 
 }

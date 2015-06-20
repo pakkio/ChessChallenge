@@ -18,10 +18,10 @@ class FirstSession_SettingModel extends FunSuite {
 
   // second test ensures that we have a way to model input of our problem
   test("Have a way to define a listing of chess pieces") {
-    val aRook = new Rook 
-      val aKing = new King 
-      val aQueen = new Queen
-      val aKnight = new Knight
+    val aRook = Rook 
+      val aKing = King 
+      val aQueen = Queen
+      val aKnight = Knight
     val pieces = {
       
       Pieces(Map(
