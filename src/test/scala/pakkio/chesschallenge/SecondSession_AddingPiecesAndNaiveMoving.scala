@@ -3,9 +3,6 @@ package pakkio.chesschallenge
 import org.scalatest.FunSuite
 
 import scala.util.{Failure, Try}
-/**
- * Created by pakki_000 on 18/06/2015.
- */
 class SecondSession_AddingPiecesAndNaiveMoving extends FunSuite {
 
   // this test ensures that we have a way to enumerate free slots in a board
@@ -24,7 +21,7 @@ class SecondSession_AddingPiecesAndNaiveMoving extends FunSuite {
       .addAPiece(PieceAtSlot(Knight,Slot(1,1)))
 
     val lAll=bAll.availableSlots()
-    assert(lAll == Nil)
+    assert(lAll.isEmpty)
   }
 
   // very naive testing just to set up attacks and some other

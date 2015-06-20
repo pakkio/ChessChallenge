@@ -14,7 +14,7 @@ object King extends Piece {
       y <- starting.y - 1 to starting.y + 1
       
       slot = Slot(x, y)
-      if ( !(x == starting.x && y== starting.y) && b.isValidPosition(slot))
+      if !(x == starting.x && y == starting.y) && b.isValidPosition(slot)
       p = List(slot)
     } yield p
     l.toList
@@ -28,26 +28,26 @@ trait RookAlike extends Piece {
     val l1 = for {
       i <- starting.x + 1 until b.m
       slot = Slot(i, starting.y)
-      if (b.isValidPosition(slot))
-    } yield (slot)
+      if b.isValidPosition(slot)
+    } yield slot
     
     val l2 = for {
       i <- starting.x -1 to 0 by -1
       slot = Slot(i, starting.y)
-      if (b.isValidPosition(slot))
-    } yield (slot)
+      if b.isValidPosition(slot)
+    } yield slot
     
     val l3 = for {
       j <- starting.y + 1 until b.n
       slot = Slot(starting.x,j)
-      if (b.isValidPosition(slot))
-    } yield (slot)
+      if b.isValidPosition(slot)
+    } yield slot
     
     val l4 = for {
       j <- starting.y - 1 to 0 by -1
       slot = Slot(starting.x,j)
-      if (b.isValidPosition(slot))
-    } yield (slot)
+      if b.isValidPosition(slot)
+    } yield slot
     
     
     List(l1.toList,l2.toList,l3.toList,l4.toList)
@@ -64,33 +64,33 @@ trait BishopAlike extends Piece {
       i <- starting.x + 1 until Math.max(b.m,b.n)
       delta = i - starting.x
       slot = Slot(i, starting.y + delta )
-      if (b.isValidPosition(slot))
+      if b.isValidPosition(slot)
       
-    } yield (d(slot))
+    } yield slot
     
     // moving on the lower left diagonal
     val l2 = for {
       i <- starting.x -1 to 0 by -1
       delta = starting.x - i
       slot = Slot(i, starting.y - delta)
-      if (b.isValidPosition(slot))
-    } yield (d(slot))
+      if b.isValidPosition(slot)
+    } yield slot
     
     // moving on the top left diagonal
     val l3 = for {
       j <- starting.y + 1 until Math.max(b.n,b.m)
       delta = starting.y - j
       slot = Slot(starting.x + delta ,j)
-      if (b.isValidPosition(slot))
-    } yield (d(slot))
+      if b.isValidPosition(slot)
+    } yield slot
     
     // moving on the right bottom diagonal
     val l4 = for {
       j <- starting.y -1  to 0 by -1
       delta = starting.y - j
       slot = Slot(starting.x + delta,j)
-      if (b.isValidPosition(slot))
-    } yield (d(slot))
+      if b.isValidPosition(slot)
+    } yield slot
     
     
     val ret=List(l1.toList,l2.toList,l3.toList,l4.toList)
@@ -98,17 +98,13 @@ trait BishopAlike extends Piece {
     ret
   }
 
-  def d(slot:Slot) = {
-    // possibly for debugging
-    // println(slot)
-    slot
-  }
+
 }
 object Bishop extends BishopAlike
 
 object Knight extends Piece {
   override val shortName="Kn"
-  // Knight can move at "L" so precomputing all the positions where it can go
+  // Knight can move at "L" so pre-computing all the positions where it can go
   def getPaths(b: Board, starting: Slot) = {
     val knightDirs = Seq((1, 2), (2, 1), (-1, 2), (-2, 1), (1, -2), (2, -1), (-1, -2), (-2, -1))
      
@@ -116,9 +112,9 @@ object Knight extends Piece {
       (i,j) <- knightDirs
       
       slot = Slot(starting.x+i, starting.y+j)
-      if(b.isValidPosition(slot))
+      if b.isValidPosition(slot)
       
-    } yield (List(slot))
+    } yield List(slot)
     l.toList
   
   }

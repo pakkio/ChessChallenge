@@ -19,7 +19,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
     val attacked = for {
       p <- content
       slot <- attackedSlots(p)
-    } yield (slot)
+    } yield slot
     //println(attacked)
     attacked.contains(s)
   }
@@ -35,7 +35,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
       // gets one of the possible paths
       p <- piece.getPaths(this, s)
-    } yield (p.toIterator.takeWhileInclusive(isFree).toList)
+    } yield p.toIterator.takeWhileInclusive(isFree).toList
 
     val ret = list.flatten
     ret
@@ -48,7 +48,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
   // check if a slot is free (inverse of the previous function)
   def isFree(pFind: Slot): Boolean = {
-    getPieceAtPosition(pFind) == None
+    getPieceAtPosition(pFind).isEmpty
   }
   // canMoveHere just check if position in inside the board
   def isValidPosition(s: Slot) =
@@ -66,13 +66,30 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
     j <- 0 until n
     pos = Slot(i, j)
     p = getPieceAtPosition(pos)
-    if (p == None)
-  } yield (pos)
+    if p.isEmpty
+  } yield pos
+
+  // verify if a tobe added piece at slot would be safe for all the other pieces
+  def wouldBeOKIfAddingThisPiece(pAtSlot:PieceAtSlot) = {
+    val slot=pAtSlot.slot
+    if(attacks(slot))
+      false // not a safe board
+    else {
+      // and providing this piece is not attacking other pieces
+      val alreadyPresentPieces = content.map(_.slot)
+
+      // if intersection is empty then we are safe
+      val ret=attackedSlots(pAtSlot).intersect(alreadyPresentPieces) == List()
+      if(ret) println("Adding solution") // Debug
+      ret
+    }
+
+  }
 
   def mkElement(p: Option[Piece]) = {
     p match {
       case None    => "--"
-      case Some(p) => p.shortName
+      case Some(p1) => p1.shortName
     }
   }
 

@@ -3,10 +3,7 @@ package pakkio.chesschallenge
 import org.scalatest.FunSuite
 
 import scala.util.{ Failure, Try }
-/**
- * Created by pakki_000 on 18/06/2015.
- */
-class ThirdSession_Shadowing extends FunSuite { 
+class ThirdSession_Shadowing extends FunSuite {
 
   test("ensure 'shadowing' from a Rook") {
     // in this case we have the following situation
