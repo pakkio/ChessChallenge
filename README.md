@@ -26,6 +26,132 @@ I tried to avoid any mutable vars and always work on list of elements. For insta
 Pieces hierarchy is modeled using multiple inheritance allowed by Scala in a very elegant way essentially for modeling the behaviour of Queen,
 which logically inherits both the movement from Rook and Bishop.
 
+Here a sample of the output of the "sbt test" command:
+
+
+    >sbt test
+    [info] Loading global plugins from <home>\.sbt\0.13\plugins
+    [info] Loading project definition from <home>\IdeaProjects\ChessChallenge\project
+    [info] Set current project to ChessChallenge (in build file:/<home>/IdeaProjects/ChessChallenge/)
+    [info] Updating {file:/<home>/IdeaProjects/ChessChallenge/}chesschallenge...
+    [info] Resolving jline#jline;2.12.1 ...
+    [info] Done updating.
+    [info] Compiling 3 Scala sources to <home>\IdeaProjects\ChessChallenge\target\scala-2.11\classes...
+    [info] 'compiler-interface' not yet compiled for Scala 2.11.6. Compiling...
+    [info]   Compilation completed in 7.984 s
+    [warn] there was one feature warning; re-run with -feature for details
+    [warn] one warning found
+    [info] Compiling 4 Scala sources to <home>\IdeaProjects\ChessChallenge\target\scala-2.11\test-classes...
+    Processing piece: pakkio.chesschallenge.Knight$@1d6caae
+    Processing piece: pakkio.chesschallenge.Bishop$@10febdf
+    Processing piece: pakkio.chesschallenge.Rook$@1df8ac6
+    Processing piece: pakkio.chesschallenge.Queen$@1f8ec7
+    Processing piece: pakkio.chesschallenge.King$@946a8d
+    [info] FirstSession_SettingModel:
+    [info] - Assuming we have a way to build up a board MxN
+    [info] - Have a way to define a listing of chess pieces
+    [info] ThirdSession_Shadowing:
+    [info] - ensure 'shadowing' from a Rook
+    [info] - ensure 'shadowing' from a Bishop
+    [info] - ensure 'shadowing' from a Queen
+    [info] SecondSession_AddingPiecesAndNaiveMoving:
+    [info] - Given a board with some pieces in it find out a listing of available positions
+    [info] - Given a board we can check if a slot is attacked by king
+    [info] - Test queen
+    [info] - Test knight
+    [info] - Test rook
+    [info] - Test bishop
+    Number of elements in list : 16
+     Kn Bi -- --
+     -- -- -- Ro
+     Ki -- -- --
+     -- -- Qu --
+    
+     Kn Bi -- --
+     -- -- -- Qu
+     Ki -- -- --
+     -- -- Ro --
+    
+     -- -- Qu --
+     Ki -- -- --
+     -- -- -- Ro
+     Kn Bi -- --
+    
+     -- -- Ro --
+     Ki -- -- --
+     -- -- -- Qu
+     Kn Bi -- --
+    
+     -- -- Ro --
+     Qu -- -- --
+     -- -- -- Bi
+     -- Ki -- Kn
+    
+     -- -- Qu --
+     Ro -- -- --
+     -- -- -- Bi
+     -- Ki -- Kn
+    
+     -- Ki -- Kn
+     -- -- -- Bi
+     Qu -- -- --
+     -- -- Ro --
+    
+     -- Ki -- Kn
+     -- -- -- Bi
+     Ro -- -- --
+     -- -- Qu --
+    
+     -- Qu -- --
+     -- -- -- Ro
+     Bi -- -- --
+     Kn -- Ki --
+    
+     -- Ro -- --
+     -- -- -- Qu
+     Bi -- -- --
+     Kn -- Ki --
+    
+     Kn -- Ki --
+     Bi -- -- --
+     -- -- -- Ro
+     -- Qu -- --
+    
+     Kn -- Ki --
+     Bi -- -- --
+     -- -- -- Qu
+     -- Ro -- --
+    
+     -- -- Bi Kn
+     Qu -- -- --
+     -- -- -- Ki
+     -- Ro -- --
+    
+     -- -- Bi Kn
+     Ro -- -- --
+     -- -- -- Ki
+     -- Qu -- --
+    
+     -- Ro -- --
+     -- -- -- Ki
+     Qu -- -- --
+     -- -- Bi Kn
+    
+     -- Qu -- --
+     -- -- -- Ki
+     Ro -- -- --
+     -- -- Bi Kn
+    
+    [info] FourthSession_CreatingAllCombinations:
+    [info] - create all combinations with some queens and a King
+    [info] Run completed in 994 milliseconds.
+    [info] Total number of tests run: 12
+    [info] Suites: completed 4, aborted 0
+    [info] Tests: succeeded 12, failed 0, canceled 0, ignored 0, pending 0
+    [info] All tests passed.
+    [success] Total time: 14 s, completed 20-giu-2015 12.43.28
+    
+
 
 
 
