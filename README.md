@@ -26,6 +26,20 @@ I tried to avoid any mutable vars and always work on list of elements. For insta
 Pieces hierarchy is modeled using multiple inheritance allowed by Scala in a very elegant way essentially for modeling the behaviour of Queen,
 which logically inherits both the movement from Rook and Bishop.
 
+NOTE:
+
+In the time frame allowed (which is around 7-8 hours) I was able to find a general, yet not optimized solution to the challenge.
+What is currently left-out:
+
+* there should be some caching mechanism to avoid repeating the same computation over and over
+* current implementation fails in providing an answer for the proposed input in an adequate time: with 5x5 board answer comes in 7 seconds, but if using a 6x6 board it seems using 15 minutes with around 200000 solutions), so I'm expecting that 7x7 would require at least some days
+* requirements asked for "unique" layout, currently they are still to be filtered out, and this probably will further optimize timings.
+
+* adding caches would probably add mutable entities in the structure, another way would be to really use some clustering parallel map-reduce mechanism.
+
+
+
+
 Here a sample of the output of the "sbt test" command:
 
 

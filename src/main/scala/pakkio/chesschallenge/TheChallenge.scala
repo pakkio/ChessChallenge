@@ -80,7 +80,7 @@ case class Board(m: Int, n: Int, content: List[PieceAtSlot] = Nil) {
 
       // if intersection is empty then we are safe
       val ret=attackedSlots(pAtSlot).intersect(alreadyPresentPieces) == List()
-      if(ret) println("Adding solution") // Debug
+      // if(ret) println("Adding solution") // Debug
       ret
     }
 

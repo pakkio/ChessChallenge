@@ -25,12 +25,12 @@ class FourthSession_CreatingAllCombinations extends FunSuite {
       16)
   }
 
-  test("the real challenge") {
+  test("the real challenge with 5x5 is taking around 7 seconds") {
     checkSolutionsAreExactly(
-      Pieces(Map(King -> 1 , Queen -> 1, Bishop -> 1, Knight -> 1)),
-      7,7,
-      5,
-      debug=true
+      Pieces(Map(King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1)),
+      5,5,
+      64,
+      debug=false
     )
   }
 
