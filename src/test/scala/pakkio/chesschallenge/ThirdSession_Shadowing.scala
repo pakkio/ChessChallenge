@@ -17,9 +17,9 @@ class ThirdSession_Shadowing extends FunSuite {
     val b = Board(4, 3, content = List(
       PieceAtSlot(Rook, Slot(1, 1)),
       PieceAtSlot(Bishop, Slot(1, 2))))
-    // the paths from Rook should NOT contain slot(1,3) since it is shadowed by the Bishop
+    // now includes also the Bishop because of takeWhileInclusive
     assert(b.attackedSlots(PieceAtSlot(Rook, Slot(1, 1)))==
-      List(Slot(2,1), Slot(3,1), Slot(0,1), Slot(1,0)))
+      List(Slot(2,1), Slot(3,1), Slot(0,1), Slot(1,2), Slot(1,0)))
   }
   test("ensure 'shadowing' from a Bishop") {
     // in this case we have the following situation
@@ -34,7 +34,8 @@ class ThirdSession_Shadowing extends FunSuite {
     assert(b.attackedSlots(PieceAtSlot(Bishop, Slot(1, 2)))==
       List(Slot(2,3), Slot(3,4), Slot(4,5), Slot(5,6), 
           Slot(0,1), 
-          Slot(0,3)))
+          Slot(0,3),
+          Slot(3,0), Slot(2,1)))
   }
   
    test("ensure 'shadowing' from a Queen") {
@@ -54,7 +55,7 @@ class ThirdSession_Shadowing extends FunSuite {
           Slot(2,1), Slot(2,0), 
           Slot(3,3), Slot(4,4), Slot(5,5), Slot(6,6), 
           Slot(1,1), Slot(0,0), 
-          Slot(1,3), Slot(0,4)))
+          Slot(1,3), Slot(0,4), Slot(4,0), Slot(3,1)))
     
   }
 
