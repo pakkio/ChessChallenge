@@ -10,6 +10,7 @@ I split up the problem in various progressive incrementally sessions which are d
 * 2nd session essentially focused on some useful functions to get from Board to find out free squares (slots as I called them) and attacked slots.
 * 3rd session focused on the movement of the pieces and on the "shadowing" i.e. attacked pieces which are protecting other pieces from attack
 * 4th session tried to put everything together and adapt similar concepts learned from the N Queen famous functional problem to this much more complex situation.
+* 5th session will be devoted to optimization and final touches (such as avoid duplicated configurations) to be able to have an answer for the given problem in a reasonable time (right now it can take many hours).
 
 
 I tried to develop in a TDD fashion i.e. writing down some tests using already supposed classes and methods and expected behaviour observed.
