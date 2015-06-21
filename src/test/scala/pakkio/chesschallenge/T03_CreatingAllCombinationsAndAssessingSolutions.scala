@@ -3,7 +3,7 @@ package pakkio.chesschallenge
 import org.scalatest.FunSuite
 
 import scala.util.{ Failure, Try }
-class FourthSession_CreatingAllCombinations extends FunSuite {
+class T03_CreatingAllCombinationsAndAssessingSolutions extends FunSuite {
   
 
   private def checkSolutionsAreExactly(pieces:InitialPieces, m:Int, n:Int, expected:Int, debug:Boolean=false) = {

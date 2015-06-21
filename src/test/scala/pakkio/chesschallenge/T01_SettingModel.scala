@@ -7,7 +7,7 @@ import org.scalatest.FunSuite
 import scala.util.{Failure, Try}
 
 // BottomUp approach to the problem: be sure we have a way to model our "game"
-class FirstSession_SettingModel extends FunSuite {
+class T01_SettingModel extends FunSuite {
 
   // first test ensures that that we have a way to model a Board
   test("Assuming we have a way to build up a board MxN") {

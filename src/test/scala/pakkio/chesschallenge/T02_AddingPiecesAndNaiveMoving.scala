@@ -3,7 +3,7 @@ package pakkio.chesschallenge
 import org.scalatest.FunSuite
 
 import scala.util.{Failure, Try}
-class SecondSession_AddingPiecesAndNaiveMoving extends FunSuite {
+class T02_AddingPiecesAndNaiveMoving extends FunSuite {
 
   // this test ensures that we have a way to enumerate free slots in a board
   // and that we can add pieces to the board
