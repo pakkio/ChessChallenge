@@ -1,18 +1,17 @@
 package pakkio.chesschallenge
 
-case class Solution(m:Int, n:Int, pieces:Pieces) {
+case class Solution(m:Int, n:Int, pieces:InitialPieces) {
 
-  type Solutions = List[Board]
+  type Solutions = Set[Set[PieceAtSlot]]
 
   // obtain a list of all the pieces to insert from the map
   // flattening down the count to proper repetition of the piece
   private val pieceList = flatPieces(pieces)
   val solution = placePieces(pieceList,m,n)
-  println("Computed solutions")
 
   def count = solution.size
 
-  private def flatPieces(pieces:Pieces) = {
+  private def flatPieces(pieces:InitialPieces) = {
     val pieceList = for {
       (p,n) <- pieces.list
       counter <- 1 to n
@@ -25,28 +24,27 @@ case class Solution(m:Int, n:Int, pieces:Pieces) {
   private def placePieces(l:List[Piece],m:Int,n:Int): Solutions = {
 
     l match {
-      case List() => List(Board(m,n))
+      case List() => Set(Set())
       case piece :: rest =>
-        println("Processing piece: "+piece)
         for {
-          b <- placePieces(rest,m,n)
+          disposition <- placePieces(rest,m,n)
+          b=Board(m,n,disposition)
           // find an available slot
-          slot <- b.availableSlots()
+          slot <- b.availableSlots
 
-          pAtSlot = PieceAtSlot(piece,slot)
+          newb = b.addAPiece(PieceAtSlot(piece,slot))
           // only in a safe position of the board
-          if b.wouldBeOKIfAddingThisPiece(pAtSlot)
+          if newb.isSafe
 
-
-
-        } yield b.addAPiece(pAtSlot)
+        } yield
+        newb.content
     }
   }
   def printSolutions =
 
   for {
-    board <- solution
+    disposition <- solution
 
-  } yield board.printBoard("")
+  } yield Board(m,n,disposition).printBoard("")
 
 }

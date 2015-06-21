@@ -24,7 +24,7 @@ class FirstSession_SettingModel extends FunSuite {
       val aKnight = Knight
     val pieces = {
       
-      Pieces(Map(
+      InitialPieces(Map(
           aRook -> 3, 
           aKing -> 1,
           aQueen -> 2))

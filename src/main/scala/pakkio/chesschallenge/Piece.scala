@@ -1,70 +1,66 @@
 package pakkio.chesschallenge
 
 abstract sealed class Piece {
-  val shortName:String
-  // each piece can define some paths in a board where to move
-  def getPaths(b: Board, starting: Slot): List[List[Slot]]
+  val mnemonic:String
+  // piece define a list of slot attacking not including its original position
+  def getAttackedSlots(b: Board, starting: Slot): Set[Slot]
+
+  // the attacked place is acceptable if it is in the board bounds
+  // and is not exactly the starting slot of this originating attacker
+  def isAcceptable(b:Board,starting:Slot,x:Slot) = {
+    val ret = !(x.x == starting.x && x.y == starting.y) && b.isValidPosition(x)
+    ret
+  }
 }
 object King extends Piece {
-  override val shortName="Ki"
+  override val mnemonic="K"
   // King returns up to 7 possible paths
-  def getPaths(b: Board, starting: Slot) = {
+  def getAttackedSlots(b: Board, starting: Slot) = {
     val l = for {
       x <- starting.x - 1 to starting.x + 1
       y <- starting.y - 1 to starting.y + 1
-      
       slot = Slot(x, y)
-      if !(x == starting.x && y == starting.y) && b.isValidPosition(slot)
-      p = List(slot)
-    } yield p
-    l.toList
+      if isAcceptable(b,starting,slot)
+    } yield slot
+    //println("King attacking "+l.mkString)
+    l.toSet
   }
 }
 trait RookAlike extends Piece {
-  override val shortName="Ro"
-  // a rook can have up to 4 possible paths
-  def getPaths(b: Board, starting: Slot) = {
+  override val mnemonic="R"
+  // a rook can move horizontally and vertically
+  def getAttackedSlots(b: Board, starting: Slot) = {
 
+    // horizontal line
     val l1 = for {
-      i <- starting.x + 1 until b.m
+      i <- 0 until b.m
       slot = Slot(i, starting.y)
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
     } yield slot
-    
+
+    // vertical line
     val l2 = for {
-      i <- starting.x -1 to 0 by -1
-      slot = Slot(i, starting.y)
-      if b.isValidPosition(slot)
-    } yield slot
-    
-    val l3 = for {
-      j <- starting.y + 1 until b.n
+      j <- 0 until b.n
       slot = Slot(starting.x,j)
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
     } yield slot
-    
-    val l4 = for {
-      j <- starting.y - 1 to 0 by -1
-      slot = Slot(starting.x,j)
-      if b.isValidPosition(slot)
-    } yield slot
-    
-    
-    List(l1.toList,l2.toList,l3.toList,l4.toList)
+
+    l1.toSet ++ l2.toSet
   }
 }
 object Rook extends RookAlike 
 
 trait BishopAlike extends Piece {
-  override val shortName = "Bi"
-  def getPaths (b: Board, starting: Slot) = {
+  override val mnemonic = "B"
+  def getAttackedSlots (b: Board, starting: Slot) = {
     
-    // moving on the upper right diagonal
+    // bishop moves along diagonals
+    //
     val l1 = for {
-      i <- starting.x + 1 until Math.max(b.m,b.n)
+      i <- starting.x  until Math.max(b.m,b.n)
       delta = i - starting.x
       slot = Slot(i, starting.y + delta )
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
       
     } yield slot
     
@@ -73,15 +69,15 @@ trait BishopAlike extends Piece {
       i <- starting.x -1 to 0 by -1
       delta = starting.x - i
       slot = Slot(i, starting.y - delta)
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
     } yield slot
     
     // moving on the top left diagonal
     val l3 = for {
-      j <- starting.y + 1 until Math.max(b.n,b.m)
+      j <- starting.y until Math.max(b.n,b.m)
       delta = starting.y - j
       slot = Slot(starting.x + delta ,j)
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
     } yield slot
     
     // moving on the right bottom diagonal
@@ -89,11 +85,11 @@ trait BishopAlike extends Piece {
       j <- starting.y -1  to 0 by -1
       delta = starting.y - j
       slot = Slot(starting.x + delta,j)
-      if b.isValidPosition(slot)
+      if isAcceptable(b,starting,slot)
     } yield slot
     
     
-    val ret=List(l1.toList,l2.toList,l3.toList,l4.toList)
+    val ret=l1.toSet ++ l2.toSet ++ l3.toSet ++ l4.toSet
     
     ret
   }
@@ -103,9 +99,9 @@ trait BishopAlike extends Piece {
 object Bishop extends BishopAlike
 
 object Knight extends Piece {
-  override val shortName="Kn"
+  override val mnemonic="N"
   // Knight can move at "L" so pre-computing all the positions where it can go
-  def getPaths(b: Board, starting: Slot) = {
+  def getAttackedSlots(b: Board, starting: Slot) = {
     val knightDirs = Seq((1, 2), (2, 1), (-1, 2), (-2, 1), (1, -2), (2, -1), (-1, -2), (-2, -1))
      
     val l = for {
@@ -114,18 +110,19 @@ object Knight extends Piece {
       slot = Slot(starting.x+i, starting.y+j)
       if b.isValidPosition(slot)
       
-    } yield List(slot)
-    l.toList
+    } yield slot
+    //println("Knight attacking "+l.mkString)
+    l.toSet
   
   }
     
 }
 object Queen extends RookAlike with BishopAlike {
-  override val shortName="Qu"
+  override val mnemonic="Q"
   // Queen has a multiple inheritance approach to path:
   // we combine the 4 orthogonal paths of rook with the 4 diagonal paths of Bishop
-  override def getPaths (b: Board, starting: Slot) =
-  super[RookAlike].getPaths(b, starting) ++ super[BishopAlike].getPaths(b, starting)
+  override def getAttackedSlots (b: Board, starting: Slot) =
+  super[RookAlike].getAttackedSlots(b, starting) ++ super[BishopAlike].getAttackedSlots(b, starting)
 }
 
 

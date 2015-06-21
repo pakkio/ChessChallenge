@@ -11,11 +11,11 @@ class ThirdSession_Shadowing extends FunSuite {
     //  -B--
     //  tRtt
     //  -t-- 
-    val b = Board(4, 3, content = List(
+    val b = Board(4, 3, content = Set(
       PieceAtSlot(Rook, Slot(1, 1)),
       PieceAtSlot(Bishop, Slot(1, 2))))
     // now includes also the Bishop because of takeWhileInclusive
-    assert(b.attackedSlots(PieceAtSlot(Rook, Slot(1, 1)))==
+    assert(b.unSafeSlots==
       List(Slot(2,1), Slot(3,1), Slot(0,1), Slot(1,2), Slot(1,0)))
   }
   test("ensure 'shadowing' from a Bishop") {
@@ -25,10 +25,10 @@ class ThirdSession_Shadowing extends FunSuite {
     //  -B----
     //  t-R--- 
     //  --f--- 
-    val b = Board(7, 7, content = List(
+    val b = Board(7, 7, content = Set(
       PieceAtSlot(Rook, Slot(2, 1)),
       PieceAtSlot(Bishop, Slot(1, 2))))
-    assert(b.attackedSlots(PieceAtSlot(Bishop, Slot(1, 2)))==
+    assert(b.unSafeSlots==
       List(Slot(2,3), Slot(3,4), Slot(4,5), Slot(5,6), 
           Slot(0,1), 
           Slot(0,3),
@@ -42,10 +42,10 @@ class ThirdSession_Shadowing extends FunSuite {
     //  --Q---
     //  -ttR-- 
     //  t-t-f- 
-    val b = Board(7, 7, content = List(
+    val b = Board(7, 7, content = Set(
       PieceAtSlot(Rook, Slot(3, 1)),
       PieceAtSlot(Queen, Slot(2, 2))))
-    assert(b.attackedSlots(PieceAtSlot(Queen, Slot(2, 2)))==
+    assert(b.unSafeSlots==
       List(Slot(3,2), Slot(4,2), Slot(5,2), Slot(6,2), 
           Slot(1,2), Slot(0,2), 
           Slot(2,3), Slot(2,4), Slot(2,5), Slot(2,6), 
