@@ -13,6 +13,8 @@ case class Solution(m:Int, n:Int, pieces:InitialPieces) {
   // obtain a list of all the pieces to insert from the map
   // flattening down the count to proper repetition of the piece
   private val pieceList = flatPieces(pieces)
+
+  // this actually computes all the solution (!)
   val solution = placePieces(pieceList,m,n)
 
   def count = solution.size
@@ -27,7 +29,12 @@ case class Solution(m:Int, n:Int, pieces:InitialPieces) {
   }
 
   // recursive function to place all residual pieces. This is an adaption
-  // of the nQueen algorithm
+  // of the nQueen algorithm, the modification is in the progressive
+  // specification of a piece from the list.
+  // original nQueen problem was far "easier" since it just kept in
+  // growing up square boards from 0x0 1x1 nxn
+  // we are instead starting from an empty m x n matrix and progressively adding
+  // pieces in the available slots providing that the new generated board is safe
   private def placePieces(l:List[Piece],m:Int,n:Int): Solutions = {
 
     l match {
