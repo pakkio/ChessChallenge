@@ -38,13 +38,83 @@ It took me the equivalent of 3 working days (or better 5 nights) to complete the
 Here a sample of the output of the testing program with one of the possible solutions printed out of the computed 3063828 solutions:
 (Test took around 28 minutes to complete analyzing around 19 100 000 possible dispositions.
 
-     - K - - - - K
-     - - - B - - -
-     - - - - - Q -
-     - - - - - - -
-     - - - - - - -
-     Q - - - - - -
-     - - - - N - B
+        D:\apps\IdeaProjects\ChessChallenge>set JAVA_OPTS=-Xmx8g
+
+        D:\apps\IdeaProjects\ChessChallenge>sbt test
+        [info] Loading global plugins from C:\Users\pakki_000\.sbt\0.13\plugins
+        [info] Set current project to ChessChallenge (in build file:/D:/apps/IdeaProjects/ChessChallenge/)
+        [info] T01_SettingModel:
+        [info] - Assuming we have a way to build up a board MxN
+        [info] - Have a way to define a listing of chess pieces
+         - - Q
+         Q - -
+
+        [info] T02_AddingPiecesAndNaiveMoving:
+        [info] - Given a board with some pieces in it find out a listing of available positions
+        [info] - Given a board we can check if a slot is attacked by king
+        [info] - Test queen
+        [info] - Test knight
+        [info] - Test rook
+        [info] - Test bishop
+        [info] - safeness Knight and King 1
+        [info] - safeness Knight and King 2
+        [info] - safeness complex 1
+        [info] - safeness complex 2
+         Q - -
+         - - Q
+
+         - - K
+         - - -
+         N - -
+
+         ....
+
+         - Q - - -
+         - - - - Q
+         B - K - -
+         B - - - -
+         N - - K -
+
+         ....
+        Instantiating 100000
+        Instantiating 200000
+        Instantiating 300000
+        Instantiating 400000
+        Instantiating 500000
+        Instantiating 600000
+        Instantiating 700000
+         K - - - - -
+         - - - - - -
+         - - - - Q -
+         B N B - - -
+         - - - - - Q
+         - - - K - -
+
+        Instantiating 100000
+        Instantiating 200000
+        Instantiating 300000
+        .....
+        Instantiating 19100000
+         K - - - - - -
+         - - - B - - -
+         N - - - - - -
+         - - - - - - Q
+         - - - B - - -
+         - Q - - - - -
+         - - - - K - -
+
+        [info] T03_CreatingAllCombinationsAndAssessingSolutions:
+        [info] - 2 Queens
+        [info] - 1 Kings and a Knight
+        [info] - the real challenge with 5x5 is taking around 2.5 seconds
+        [info] - the real challenge with 6x6 is taking around 42 seconds
+        [info] - the real challenge with 7x7 is taking around 27 minutes giving virtual machine -Xmx8G
+        [info] Run completed in 36 minutes, 13 seconds.
+        [info] Total number of tests run: 17
+        [info] Suites: completed 3, aborted 0
+        [info] Tests: succeeded 17, failed 0, canceled 0, ignored 0, pending 0
+        [info] All tests passed.
+        [success] Total time: 2175 s, completed 22-Jun-2015 01:34:24
 
 
 
