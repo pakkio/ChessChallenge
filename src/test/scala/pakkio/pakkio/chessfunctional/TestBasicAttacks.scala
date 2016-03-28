@@ -79,7 +79,7 @@ class TestBasicAttacks extends FunSuite {
   def positionsUnderAttack(piece: Piece, list: List[(Int, Int)]): List[Rec] = {
     val results = list.map(
       { case p@(x: Int, y: Int) => Rec(p,
-        piece.attacks(
+        piece.attacks(piece.getP,
           P(x, y)
         )
       )

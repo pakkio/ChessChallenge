@@ -5,37 +5,38 @@ package pakkio.pakkio.chessfunctional
 case class Piece(
                   optionalPos: Option[P] = None,
                   name: String = "Piece",
-                  attacks: (P) => Boolean =
-                    (p) => false) {
+                  attacks: (P,P) => Boolean =
+                    (me,p) => false) {
 
-  lazy val getP = {
-    if (optionalPos.isEmpty) throw new AttackException
+  def getP = {
+    if (optionalPos.isEmpty)
+      throw new AttackException
     optionalPos.get
   }
 
 }
 
 class King(override val optionalPos: Option[P] = None) extends Piece {
-  override val attacks: (P) => Boolean = {
-    (p) =>
-      println(s"checking if this King in $optionalPos is attacking $p")
-      (math.abs(p.x - getP.x) <= 1) &&
-        (math.abs(p.y - getP.y) <= 1) &&
-        p != getP
+  override val attacks: (P,P) => Boolean = {
+    (me,p) =>
+      //println(s"checking if this King in $optionalPos is attacking $p")
+      (math.abs(p.x - me.x) <= 1) &&
+        (math.abs(p.y - me.y) <= 1) &&
+        p != me
   }
 
   override val name: String = "King"
 }
 
 class Queen(override val optionalPos: Option[P] = None) extends Piece {
-  override val attacks: (P) => Boolean = {
-    (p) =>
-      p != getP &&
+  override val attacks: (P,P) => Boolean = {
+    (me,p) =>
+      p != me &&
         (
           // same row or columns
-          p.x == getP.x || p.y == getP.y ||
+          p.x == me.x || p.y == me.y ||
             // same diagonal
-            math.abs(p.x - getP.x) == math.abs(p.y - getP.y)
+            math.abs(p.x - me.x) == math.abs(p.y - me.y)
           )
   }
 
@@ -43,12 +44,12 @@ class Queen(override val optionalPos: Option[P] = None) extends Piece {
 }
 
 class Rook(override val optionalPos: Option[P] = None) extends Piece {
-  override val attacks: (P) => Boolean = {
-    (p) =>
-      p != getP &&
+  override val attacks: (P,P) => Boolean = {
+    (me,p) =>
+      p != me &&
         (
           // same row or columns
-          p.x == getP.x || p.y == getP.y
+          p.x == me.x || p.y == me.y
           )
   }
 
@@ -56,12 +57,12 @@ class Rook(override val optionalPos: Option[P] = None) extends Piece {
 }
 
 class Bishop(override val optionalPos: Option[P] = None) extends Piece {
-  override val attacks: (P) => Boolean = {
-    (p) =>
-      p != getP &&
+  override val attacks: (P,P) => Boolean = {
+    (me,p) =>
+      p != me &&
         (
           // same diagonal
-          math.abs(p.x - getP.x) == math.abs(p.y - getP.y)
+          math.abs(p.x - me.x) == math.abs(p.y - me.y)
           )
   }
 
@@ -69,13 +70,13 @@ class Bishop(override val optionalPos: Option[P] = None) extends Piece {
 }
 
 class Knight(override val optionalPos: Option[P] = None) extends Piece {
-  override val attacks: (P) => Boolean = {
-    (p) => {
+  override val attacks: (P,P) => Boolean = {
+    (me,p) => {
       //print(p)
-      val diffx = math.abs(p.x - getP.x)
-      val diffy = math.abs(p.y - getP.y)
+      val diffx = math.abs(p.x - me.x)
+      val diffy = math.abs(p.y - me.y)
       //print(s"diffx: $diffx, diffy: $diffy")
-      val ret = p != getP && (
+      val ret = p != me && (
         ((diffx == 1) && (diffy == 2)) ||
           ((diffx == 2) && (diffy == 1)))
       //println(s" returning: $ret")
