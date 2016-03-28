@@ -15,9 +15,9 @@ trait CheckMemory {
 
   def fmt(x:Double) = f"$x%.2f"
   def f(x: Long): String = {
-    if (x >= _1GB) return fmt(x / _1GB) + " GB"
-    if (x >= _1MB) return fmt(x / _1MB) + " MB"
-    if (x >= _1KB) return fmt(x / _1KB) + " KB"
+    if (x >= _1GB) return fmt(x / _1GB) + " G"
+    if (x >= _1MB) return fmt(x / _1MB) + " M"
+    if (x >= _1KB) return fmt(x / _1KB) + " K"
     x + "B"
   }
 
