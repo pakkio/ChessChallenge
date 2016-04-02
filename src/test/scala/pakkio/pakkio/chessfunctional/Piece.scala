@@ -2,9 +2,8 @@ package pakkio.pakkio.chessfunctional
 
 // case class allows usage of .copy to generate
 // new pieces in immutable ways
-case class Piece(
+case class Piece( name: String,
                   optionalPos: Option[P] = None,
-                  name: String = "Piece",
                   attacks: (P,P) => Boolean =
                     (me,p) => false) {
 
@@ -14,9 +13,12 @@ case class Piece(
     optionalPos.get
   }
 
+
+
+
 }
 
-class King(override val optionalPos: Option[P] = None) extends Piece {
+class King(override val optionalPos: Option[P] = None) extends Piece("K") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
       //println(s"checking if this King in $optionalPos is attacking $p")
@@ -25,10 +27,10 @@ class King(override val optionalPos: Option[P] = None) extends Piece {
         p != me
   }
 
-  override val name: String = "King"
+
 }
 
-class Queen(override val optionalPos: Option[P] = None) extends Piece {
+class Queen(override val optionalPos: Option[P] = None) extends Piece("Q") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
       p != me &&
@@ -40,10 +42,9 @@ class Queen(override val optionalPos: Option[P] = None) extends Piece {
           )
   }
 
-  override val name: String = "Queen"
 }
 
-class Rook(override val optionalPos: Option[P] = None) extends Piece {
+class Rook(override val optionalPos: Option[P] = None) extends Piece("R") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
       p != me &&
@@ -53,10 +54,9 @@ class Rook(override val optionalPos: Option[P] = None) extends Piece {
           )
   }
 
-  override val name: String = "Rook"
 }
 
-class Bishop(override val optionalPos: Option[P] = None) extends Piece {
+class Bishop(override val optionalPos: Option[P] = None) extends Piece("B") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
       p != me &&
@@ -66,10 +66,9 @@ class Bishop(override val optionalPos: Option[P] = None) extends Piece {
           )
   }
 
-  override val name: String = "Bishop"
 }
 
-class Knight(override val optionalPos: Option[P] = None) extends Piece {
+class Knight(override val optionalPos: Option[P] = None) extends Piece("N") {
   override val attacks: (P,P) => Boolean = {
     (me,p) => {
       //print(p)
@@ -84,7 +83,6 @@ class Knight(override val optionalPos: Option[P] = None) extends Piece {
     }
   }
 
-  override val name: String = "Knight"
 }
 
 

@@ -36,12 +36,14 @@ object Duplicates {
       }
       true
     } else {
-      map.add(key)
-      counter+=1
-      if(counter % 100000 == 0) {
-        println(s"Adding ${f(counter)}")
+      this.synchronized {
+        map.add(key)
+        counter += 1
+        if (counter % 100000 == 0) {
+          println(s"Adding ${f(counter)}")
+        }
+        false
       }
-      false
     }
 
   }
@@ -60,7 +62,7 @@ case class Scene (size: Int,
   def insert(piece:Piece):List[Scene] = {
     val forList = for {
       p <- initialSafe
-      tentative = piece.copy(Some(p))
+      tentative = piece.copy(name = piece.name, Some(p))
 
     } yield {
       if (pieces.forall( p => !tentative.attacks(tentative.getP,p.getP)) ) {
@@ -92,8 +94,8 @@ case class Scene (size: Int,
 
   def mkElement(p: Option[Piece]) = {
     p match {
-      case None    => "--"
-      case Some(p1) => p1.name.substring(0,2)
+      case None    => "-"
+      case Some(p1) => p1.name
     }
   }
 
@@ -143,19 +145,19 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     val list=List(Scene(N, List(), initialSafe, noAttacks))
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
 
-    val finalList = list
-      .flatMap(s => s.insert(new King))
-      .flatMap(s => s.insert(new King))
-      .flatMap(s => s.insert(new Queen))
-      .flatMap(s => s.insert(new Queen))
-      .flatMap(s => s.insert(new Bishop))
-      .flatMap(s => s.insert(new Bishop))
+    val finalList = list.par
+      .flatMap(s => s.insert(new King)).par
+      .flatMap(s => s.insert(new King)).par
+      .flatMap(s => s.insert(new Queen)).par
+      .flatMap(s => s.insert(new Queen)).par
+      .flatMap(s => s.insert(new Bishop)).par
+      .flatMap(s => s.insert(new Bishop)).par
       .flatMap(s => s.insert(new Knight))
 
 
     //finalList.map(println)
-    println(finalList(0))
-    println(finalList(finalList.size-1))
+    println(finalList.head)
+    println(finalList.last)
 
 
     println(s"Found ${finalList.size} combinations")
