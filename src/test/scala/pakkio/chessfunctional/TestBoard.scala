@@ -33,12 +33,18 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
 
     val finalList = list.par
-      .flatMap(s => s.insert((p) => new Queen(p)))
-      .flatMap(s => s.insert((p) => new Queen(p)))
-      .flatMap(s => s.insert((p) => new Bishop(p)))
-      .flatMap(s => s.insert((p) => new Bishop(p)))
-      .flatMap(s => s.insert((p) => new King(p)))
-      .flatMap(s => s.insert((p) => new King(p)))
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      /*.flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par
+      .flatMap(s => s.insert((p) => new Queen(p))).par*/
+      .flatMap(s => s.insert((p) => new Bishop(p))).par
+      .flatMap(s => s.insert((p) => new Bishop(p))).par
+      .flatMap(s => s.insert((p) => new King(p))).par
+      .flatMap(s => s.insert((p) => new King(p))).par
       .flatMap(s => s.insert((p) => new Knight(p)))
 
 
@@ -46,9 +52,13 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     println(finalList.head)
     println(finalList.last)
 
+    /*val printed = finalList.map(_.toString)
+    val unique = printed.distinct
+    val erroneous = printed.diff(unique)*/
+
     assert(finalList.size === 3063828)
 
-    println(s"Found ${finalList.size} combinations")
+    println(s"Found ${finalList.size} combinations expected 3063828")
 
 
   }

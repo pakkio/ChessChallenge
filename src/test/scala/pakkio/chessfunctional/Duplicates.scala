@@ -17,30 +17,37 @@ object Duplicates {
     x + "B"
   }
 
-  var counter: Int = 0
-  var counterDuplicates: Int = 0
-  val map = new util.HashSet[String]
 
-  def check(s: Scene) = {
-    val key = s.toString
-    if (map.contains(key)) {
-      // println("duplicated entry")
-      counterDuplicates += 1
-      if (counterDuplicates % 100000 == 0) {
-        println(s"Duplicates ${f(counterDuplicates)}")
-      }
-      true
-    } else {
-      this.synchronized {}
-      map.add(key)
-      counter += 1
-      if (counter % 100000 == 0) {
-        println(s"Adding ${f(counter)}")
-      }
-      false
-    }
+  def sha1(s: String) = {
+    val md = java.security.MessageDigest.getInstance("SHA-1")
+    md.digest(s.getBytes()).map("%02x".format(_)).mkString
   }
 
+  var counter: Int = 0
+  var counterDuplicates: Int = 0
+  var map = Set[String]()
+
+
+  def check(key: String) = {
+    this.synchronized {
+      if (map.contains(key)) {
+        // println("duplicated entry")
+        counterDuplicates += 1
+        if (counterDuplicates % 100000 == 0) {
+          println(s"Duplicates ${f(counterDuplicates)}")
+        }
+        true
+      } else {
+        map += key
+        counter += 1
+        if (counter % 100000 == 0) {
+          println(s"Adding ${f(counter)}")
+        }
+        false
+      }
+
+    }
+  }
 
 
 }
