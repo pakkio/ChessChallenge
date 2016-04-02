@@ -26,21 +26,15 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     assert(printed === " - -\n R -\n ")
   }
 
-  test("test1") {
+  test("testing final exercise") {
     val noAttacks : (P) => Boolean = (p) => false
     val K=7
     val list=List(Scene(K, List(), getFreeSlots(K), noAttacks))
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
 
-    val finalList = list.par
+    val finalList = list
       .flatMap(s => s.insert((p) => new Queen(p))).par
       .flatMap(s => s.insert((p) => new Queen(p))).par
-      /*.flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par*/
       .flatMap(s => s.insert((p) => new Bishop(p))).par
       .flatMap(s => s.insert((p) => new Bishop(p))).par
       .flatMap(s => s.insert((p) => new King(p))).par
