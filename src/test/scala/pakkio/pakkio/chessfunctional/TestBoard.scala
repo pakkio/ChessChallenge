@@ -21,7 +21,9 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
       override val size: Int = 2
       override val pieces: Seq[Piece] = Seq(new Rook(Some(P(0, 0))))
     }
-    (new TestPieces).toString === " -- --\n Ro --\n"
+    val printed = (new TestPieces).toString
+
+    assert(printed === " - -\n R -\n ")
   }
 
   test("test1") {
@@ -44,7 +46,7 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     println(finalList.head)
     println(finalList.last)
 
-    finalList.size === 3063828
+    assert(finalList.size === 3063828)
 
     println(s"Found ${finalList.size} combinations")
 
