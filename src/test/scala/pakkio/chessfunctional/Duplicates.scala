@@ -1,4 +1,4 @@
-package pakkio.pakkio.chessfunctional
+package pakkio.chessfunctional
 
 import java.util
 

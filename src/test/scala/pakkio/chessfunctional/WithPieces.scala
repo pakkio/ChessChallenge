@@ -1,4 +1,4 @@
-package pakkio.pakkio.chessfunctional
+package pakkio.chessfunctional
 
 import scala.collection.immutable.Nil
 
@@ -18,7 +18,7 @@ trait  WithPieces {
   }
 
   def getPieceAtPosition(c: Int, r: Int): Option[Piece] = {
-    val filtered = pieces.filter(p => p.getP.x == c && p.getP.y == r)
+    val filtered = pieces.filter(p => p.pos.x == c && p.pos.y == r)
     val ret = filtered match {
       case Nil => None
       case p :: _ => Some(p)

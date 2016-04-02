@@ -1,11 +1,11 @@
-package pakkio.pakkio.chessfunctional
+package pakkio.chessfunctional
 
 import org.scalatest.FunSuite
 
 class TestBasicAttacks extends FunSuite {
 
   test("Testing a King attack") {
-    val king = new King(Some(P(1, 1)))
+    val king = new King(P(1, 1))
     val list: List[(Int, Int)] = createSlots
     val results: List[Rec] = positionsUnderAttack(king, list)
     val correctResults: List[Int] =
@@ -20,7 +20,7 @@ class TestBasicAttacks extends FunSuite {
 
   }
   test("Testing a Queen attack") {
-    val queen = new Queen(Some(P(1,1)))
+    val queen = new Queen(P(1,1))
     // reuse king's list
     val list: List[(Int, Int)] = createSlots
     val results: List[Rec] = positionsUnderAttack(queen, list)
@@ -34,7 +34,7 @@ class TestBasicAttacks extends FunSuite {
     compare("Queen",results,correctResults)
   }
   test("Testing a Rook attack") {
-    val rook = new Rook(Some(P(1,1)))
+    val rook = new Rook(P(1,1))
     // reuse king's list
     val list: List[(Int, Int)] = createSlots
     val results: List[Rec] = positionsUnderAttack(rook, list)
@@ -48,7 +48,7 @@ class TestBasicAttacks extends FunSuite {
     compare("Rook",results,correctResults)
   }
   test("Testing a Bishop attack") {
-    val queen = new Bishop(Some(P(1,1)))
+    val queen = new Bishop(P(1,1))
     // reuse king's list
     val list: List[(Int, Int)] = createSlots
     val results: List[Rec] = positionsUnderAttack(queen, list)
@@ -62,7 +62,7 @@ class TestBasicAttacks extends FunSuite {
     compare("Bishop",results,correctResults)
   }
   test("Testing a Knight attack") {
-    val queen = new Knight(Some(P(1,1)))
+    val queen = new Knight(P(1,1))
     // reuse king's list
     val list: List[(Int, Int)] = createSlots
     val results: List[Rec] = positionsUnderAttack(queen, list)
@@ -79,9 +79,7 @@ class TestBasicAttacks extends FunSuite {
   def positionsUnderAttack(piece: Piece, list: List[(Int, Int)]): List[Rec] = {
     val results = list.map(
       { case p@(x: Int, y: Int) => Rec(p,
-        piece.attacks(piece.getP,
-          P(x, y)
-        )
+        piece.attacks(P(x, y))
       )
       }
     )
@@ -103,13 +101,12 @@ class TestBasicAttacks extends FunSuite {
     val comparing = results.zip(correctResults)
 
     val forall = comparing.forall(
-      { case (p: Rec, flag: Int) => {
-        print(title,"checking ",p.p, p.b, flag)
-        val ret = if (p.b) (flag == 1) else (flag == 0)
-        if(!ret)
+      { case (p: Rec, flag: Int) =>
+        print(title, "checking ", p.p, p.b, flag)
+        val ret = if (p.b) flag == 1 else flag == 0
+        if (!ret)
           println(s" ret: $ret")
         ret
-      }
       }
     )
     println("forall is ",forall)
