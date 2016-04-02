@@ -23,8 +23,7 @@ class King(override val optionalPos: Option[P] = None) extends Piece("K") {
     (me,p) =>
       //println(s"checking if this King in $optionalPos is attacking $p")
       (math.abs(p.x - me.x) <= 1) &&
-        (math.abs(p.y - me.y) <= 1) &&
-        p != me
+        (math.abs(p.y - me.y) <= 1)
   }
 
 
@@ -33,13 +32,10 @@ class King(override val optionalPos: Option[P] = None) extends Piece("K") {
 class Queen(override val optionalPos: Option[P] = None) extends Piece("Q") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
-      p != me &&
-        (
           // same row or columns
           p.x == me.x || p.y == me.y ||
             // same diagonal
             math.abs(p.x - me.x) == math.abs(p.y - me.y)
-          )
   }
 
 }
@@ -47,11 +43,8 @@ class Queen(override val optionalPos: Option[P] = None) extends Piece("Q") {
 class Rook(override val optionalPos: Option[P] = None) extends Piece("R") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
-      p != me &&
-        (
           // same row or columns
           p.x == me.x || p.y == me.y
-          )
   }
 
 }
@@ -59,11 +52,8 @@ class Rook(override val optionalPos: Option[P] = None) extends Piece("R") {
 class Bishop(override val optionalPos: Option[P] = None) extends Piece("B") {
   override val attacks: (P,P) => Boolean = {
     (me,p) =>
-      p != me &&
-        (
           // same diagonal
           math.abs(p.x - me.x) == math.abs(p.y - me.y)
-          )
   }
 
 }
@@ -75,9 +65,9 @@ class Knight(override val optionalPos: Option[P] = None) extends Piece("N") {
       val diffx = math.abs(p.x - me.x)
       val diffy = math.abs(p.y - me.y)
       //print(s"diffx: $diffx, diffy: $diffy")
-      val ret = p != me && (
+      val ret =
         ((diffx == 1) && (diffy == 2)) ||
-          ((diffx == 2) && (diffy == 1)))
+          ((diffx == 2) && (diffy == 1))
       //println(s" returning: $ret")
       ret
     }
