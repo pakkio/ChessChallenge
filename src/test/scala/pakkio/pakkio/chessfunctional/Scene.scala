@@ -21,7 +21,7 @@ case class Scene (override val size: Int,
   def insert(piece: Piece): Seq[Scene] = {
     val forList = for {
       p <- initialSafe
-      tentative = piece.copy(Some(p))
+      tentative = piece.copy(piece.name,Some(p))
 
     } yield {
       if (pieces.forall(p => !tentative.attacks(tentative.getP, p.getP))) {

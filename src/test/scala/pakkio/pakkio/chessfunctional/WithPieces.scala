@@ -12,8 +12,8 @@ trait  WithPieces {
 
   def mkElement(p: Option[Piece]) = {
     p match {
-      case None => "--"
-      case Some(p1) => p1.name.substring(0, 2)
+      case None => "-"
+      case Some(p1) => p1.name
     }
   }
 
