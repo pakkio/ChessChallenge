@@ -29,17 +29,29 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
   test("testing final exercise") {
     val noAttacks : (P) => Boolean = (p) => false
     val K=7
-    val list=List(Scene(K, List(), getFreeSlots(K), noAttacks))
+    val emptyBoard=List(Scene(K, List(), getFreeSlots(K), noAttacks))
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
 
-    val finalList = list
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Queen(p))).par
-      .flatMap(s => s.insert((p) => new Bishop(p))).par
-      .flatMap(s => s.insert((p) => new Bishop(p))).par
-      .flatMap(s => s.insert((p) => new King(p))).par
-      .flatMap(s => s.insert((p) => new King(p))).par
-      .flatMap(s => s.insert((p) => new Knight(p)))
+    val finalList = for {
+      q0 <- emptyBoard
+      q1 <- q0.insert(Queen)
+      q2 <- q1.insert(Queen)
+      q3 <- q2.insert(Bishop)
+      q4 <- q3.insert(Bishop)
+      q5 <- q4.insert(King)
+      q6 <- q5.insert(King)
+      q7 <- q6.insert(Knight)
+
+    } yield q7
+
+//    val finalList = emptyBoard
+//      .flatMap(_.insert(Queen)).par
+//      .flatMap(_.insert(Queen)).par
+//      .flatMap(_.insert(Bishop)).par
+//      .flatMap(_.insert(Bishop)).par
+//      .flatMap(_.insert(King)).par
+//      .flatMap(_.insert(King)).par
+//      .flatMap(_.insert(Knight)).par
 
 
     //finalList.map(println)

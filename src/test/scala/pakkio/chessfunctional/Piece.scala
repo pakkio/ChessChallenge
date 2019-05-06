@@ -7,7 +7,7 @@ abstract class Piece(val name: String){
   def attacks: (P) => Boolean
 }
 
-class King(override val pos: P) extends Piece("K") {
+case class King(override val pos: P) extends Piece("K") {
   override def attacks: (P) => Boolean = {
     (p) =>
       //println(s"checking if this King in $optionalPos is attacking $p")
@@ -16,7 +16,7 @@ class King(override val pos: P) extends Piece("K") {
   }
 }
 
-class Queen(override val pos: P) extends Piece("Q") {
+case class Queen(override val pos: P) extends Piece("Q") {
   override def attacks: (P) => Boolean = {
     (p) =>
           // same row or columns
@@ -26,7 +26,7 @@ class Queen(override val pos: P) extends Piece("Q") {
   }
 }
 
-class Rook(override val pos: P) extends Piece("R") {
+case class Rook(override val pos: P) extends Piece("R") {
   override def attacks: (P) => Boolean = {
     (p) =>
           // same row or columns
@@ -34,7 +34,7 @@ class Rook(override val pos: P) extends Piece("R") {
   }
 }
 
-class Bishop(override val pos: P) extends Piece("B") {
+case class Bishop(override val pos: P) extends Piece("B") {
   override def attacks: (P) => Boolean = {
     (p) =>
           // same diagonal
@@ -42,7 +42,7 @@ class Bishop(override val pos: P) extends Piece("B") {
   }
 }
 
-class Knight(override val pos: P) extends Piece("N") {
+case class Knight(override val pos: P) extends Piece("N") {
   override def attacks: (P) => Boolean = {
     (p) => {
       //print(p)
