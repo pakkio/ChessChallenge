@@ -26,8 +26,16 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     assert(printed === " - -\n R -\n ")
   }
 
+  // the idea here is to have an initial board with all free slots and no attacks being held
+  // then at each iteration we add a piece in all freeslots, i.e. slots which are free and not under attack
+  // at each iteration we spawn a new board for each distinct situation, restricting the "free" slots
+  // and augmenting the function specifying which coordinates are under attack.
+  // this is a nice functional implementation noAttack is augmented with each further piece placed
+  // this makes the algorithm fully parallelizable and using completely immutable data
+  // and it is really fast.
+
   test("testing final exercise") {
-    val noAttacks : (P) => Boolean = (p) => false
+    val noAttacks : (P => Boolean) = (p => false)
     val K=7
     val emptyBoard=List(Scene(K, List(), getFreeSlots(K), noAttacks))
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
