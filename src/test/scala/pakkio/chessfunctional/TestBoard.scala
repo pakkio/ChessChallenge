@@ -40,7 +40,7 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
     val emptyBoard=List(Scene(K, List(), getFreeSlots(K), noAttacks))
     // 7x7 King -> 2 , Queen -> 2, Bishop -> 2, Knight -> 1
 
-    val finalList = for {
+    val solutionBoard = for {
       q0 <- emptyBoard
       q1 <- q0.insert(Queen)
       q2 <- q1.insert(Queen)
@@ -52,7 +52,7 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
 
     } yield q7
 
-//    val finalList = emptyBoard
+//    val solutionBoard = emptyBoard
 //      .flatMap(_.insert(Queen)).par
 //      .flatMap(_.insert(Queen)).par
 //      .flatMap(_.insert(Bishop)).par
@@ -62,17 +62,17 @@ class TestBoard extends FunSuite with CheckMemory with Testable {
 //      .flatMap(_.insert(Knight)).par
 
 
-    //finalList.map(println)
-    println(finalList.head)
-    println(finalList.last)
+    //solutionBoard.map(println)
+    println(solutionBoard.head)
+    println(solutionBoard.last)
 
-    /*val printed = finalList.map(_.toString)
+    /*val printed = solutionBoard.map(_.toString)
     val unique = printed.distinct
     val erroneous = printed.diff(unique)*/
 
-    assert(finalList.size === 3063828)
+    assert(solutionBoard.size === 3063828)
 
-    println(s"Found ${finalList.size} combinations expected 3063828")
+    println(s"Found ${solutionBoard.size} combinations expected 3063828")
 
 
   }
