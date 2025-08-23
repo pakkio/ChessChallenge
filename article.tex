@@ -34,7 +34,7 @@ Algorithmic Innovation and Symmetry Elimination}
 \maketitle
 
 \begin{abstract}
-We present a case study of algorithmic optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization over multiple iterations, we achieved significant performance improvements: from a baseline of 20-24 seconds for a 6$\times$6 board to 353ms (68$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—previously requiring 40+ minutes with brute force approaches. The key breakthrough was symmetry elimination using group theory, which reduced the solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. This work demonstrates how methodical algorithmic analysis can substantially improve the computational feasibility of exponentially complex combinatorial problems.
+We present a case study in combinatorial optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization over multiple iterations, we achieved significant performance improvements: from a baseline of 20-24 seconds for a 6$\times$6 board to 353ms (68$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—previously requiring 40+ minutes with brute force approaches. The key breakthrough was symmetry elimination using group theory, which reduced the solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. This work demonstrates how methodical algorithmic analysis can substantially improve the computational feasibility of exponentially complex combinatorial problems.
 \end{abstract}
 
 \section{Introduction}
@@ -205,7 +205,7 @@ Symmetry elimination & 2,969 canonical & 353ms & \textbf{57-68×} \\
 Method & Solutions Found & Time & Improvement \\
 \midrule
 Projected baseline & - & 40+ min & - \\
-With symmetry & 382,990 canonical & 14.4s & 167× faster \\
+With symmetry & 382,990 canonical & 14.4s & 167× faster vs 40+ min baseline \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -219,8 +219,8 @@ With symmetry & 382,990 canonical & 14.4s & 167× faster \\
 The exponential nature of the problem makes larger boards increasingly challenging. However, symmetry elimination fundamentally changes the scaling behavior:
 
 \begin{align}
-T_{original}(n) &\approx O((n^2)^k) \text{ where } k = 7 \text{ pieces, } n^2 \text{ board positions} \\
-T_{symmetry}(n) &\approx O\left(\frac{(n^2)^k}{|G|}\right) \text{ with symmetry group } |G| \leq 8
+T_{original}(n) &\approx O(n^{2k}) \text{ where } k = 7 \text{ pieces, } n^2 \text{ board positions} \\
+T_{symmetry}(n) &\approx O\left(\frac{n^{2k}}{|G|}\right) \text{ with symmetry group } |G| \leq 8
 \end{align}
 
 This theoretical reduction factor (up to 8× for square boards), combined with reduced computational overhead from canonical form checking and early pruning, explains the substantial performance improvements observed.
