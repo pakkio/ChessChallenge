@@ -1,3 +1,25 @@
 target/
 .idea/
+# Large training data files
 chess_training_data.csv
+
+# ML model artifacts  
+*.pkl
+*.py
+model_analysis.png
+
+# Experimental solver files (keep only working versions)
+*ML*.scala
+*Opt*.scala
+!CarefulOptimizedSolver.scala
+!CarefulOptTest.scala
+
+# IDE and build artifacts
+.idea/
+target/
+*.class
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
