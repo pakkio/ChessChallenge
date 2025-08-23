@@ -1,10 +1,10 @@
 package pakkio.chesschallenge
 
-// 7x7 test using MinimalOptimizedSolver with ML enhancements
+// 7x7 test using CarefulOptimizedSolver with optimizations
 object Test7x7ML extends App {
-  println("=== 7x7 Chess Challenge with ML Enhancements ===")
-  println("Testing MinimalOptimizedSolver on 7x7 board...")
-  println("Expected time: 10-20 minutes (down from 40+ minutes original estimate)")
+  println("=== 7x7 Chess Challenge with Careful Optimizations ===")
+  println("Testing CarefulOptimizedSolver on 7x7 board...")
+  println("Expected time: ~38 seconds (optimized)")
   
   val initialPieces = InitialPieces(Map(King -> 2, Queen -> 2, Bishop -> 2, Knight -> 1))
   
@@ -14,16 +14,16 @@ object Test7x7ML extends App {
   println(s"Available squares after placement: ${49 - initialPieces.list.values.sum}")
   
   println("\nOptimizations active:")
-  println("✅ ML-based branch pruning (0.1 threshold)")
-  println("✅ Intelligent piece ordering (King→Knight→Bishop→Queen)")
+  println("✅ Cached string canonicalization")
+  println("✅ StringBuilder for faster string operations")
   println("✅ 8-way symmetry elimination") 
   println("✅ Parallel processing for large datasets")
   
   println(s"\nStarting 7x7 solve at ${java.time.LocalTime.now()}...")
-  println("Progress will be shown via ML statistics...")
+  println("Progress will be shown via cache statistics...")
   
   val startTime = System.nanoTime()
-  val solver = MinimalOptimizedSolver(7, 7, initialPieces)
+  val solver = CarefulOptimizedSolver(7, 7, initialPieces)
   
   // Start timing
   val result = solver.count
@@ -36,44 +36,41 @@ object Test7x7ML extends App {
   println(s"Runtime: ${durationMs}%.1f ms (${durationMin}%.2f minutes)")
   println(s"Completed at: ${java.time.LocalTime.now()}")
   
-  // Performance analysis vs estimates
-  val originalEstimateMin = 40.0
-  val actualSpeedup = originalEstimateMin / durationMin
+  // Performance analysis
+  val expectedTimeS = 38.4
+  val actualSpeedup = if (durationMs < expectedTimeS * 1000) (expectedTimeS * 1000) / durationMs else 0.0
   
-  if (durationMin < 20) {
-    println(f"🎉 SUCCESS: Completed in ${durationMin}%.1f minutes!")
-    println(f"🚀 ${actualSpeedup}%.1fx faster than original 40+ minute estimate")
-    println("Phase 2 ML optimizations exceeded expectations!")
-  } else if (durationMin < 30) {
-    println(f"✅ GOOD: Completed in ${durationMin}%.1f minutes")  
-    println(f"📈 ${actualSpeedup}%.1fx improvement over original estimate")
-    println("ML optimizations provided significant benefit")
+  if (durationMs < 45000) {
+    println(f"🎉 SUCCESS: Completed in ${durationMs}%.1f ms!")
+    if (actualSpeedup > 1.0) {
+      println(f"🚀 ${actualSpeedup}%.2fx faster than expected ${expectedTimeS}s")
+    }
+    println("Careful optimizations working well!")
+  } else if (durationMs < 60000) {
+    println(f"✅ GOOD: Completed in ${durationMs}%.1f ms")  
+    println("Within expected performance range")
   } else {
-    println(f"⚠️  SLOW: Took ${durationMin}%.1f minutes")
-    println("May need Phase 3 optimizations for larger boards")
+    println(f"⚠️  SLOWER: Took ${durationMs}%.1f ms")
+    println("May need further optimization")
   }
   
-  // Scaling analysis
-  val ratio6x6To7x7 = durationMs / 1134.0 // 1134ms was 6x6 MinimalOptimized time
-  println(f"\nScaling factor 6x6→7x7: ${ratio6x6To7x7}%.1fx")
-  
-  if (ratio6x6To7x7 < 100) {
-    println("🎯 Excellent scaling - ready for 8x8 testing")
-  } else if (ratio6x6To7x7 < 500) {
-    println("📊 Reasonable scaling - 8x8 may be feasible") 
+  // Expected solutions validation
+  val expectedSolutions = 382990
+  if (result == expectedSolutions) {
+    println(f"✅ ACCURACY: Perfect match - ${result} solutions")
   } else {
-    println("⚠️  Poor scaling - need better algorithms for 8x8")
+    val difference = math.abs(result - expectedSolutions)
+    println(f"⚠️  ACCURACY: ${result} vs expected ${expectedSolutions} (diff: ${difference})")
   }
   
-  println("\n=== PHASE 2 ML ENHANCEMENT ASSESSMENT ===")
-  println("Optimizations tested:")
-  println("• Conservative ML pruning: Maintained accuracy while reducing search")
-  println("• Intelligent piece ordering: Reduced branching factor significantly") 
-  println("• Symmetry elimination: Prevented duplicate computation")
-  println("• Parallel processing: Utilized multiple CPU cores effectively")
+  println("\n=== CAREFUL OPTIMIZATION ASSESSMENT ===")
+  println("Optimizations active:")
+  println("• Cached string canonicalization: Fast symmetry detection")
+  println("• StringBuilder optimization: Reduced string allocation overhead") 
+  println("• Tuned parallelization: Optimal threshold for parallel processing")
+  println("• Early exit patterns: Reduced unnecessary computations")
   
-  if (durationMin <= 20) {
-    println("\n🏆 PHASE 2 COMPLETE: ML enhancements successful for 7x7!")
-    println("Ready to implement Phase 3 advanced AI techniques if needed for 8x8+")
+  if (durationMs <= 45000 && result == expectedSolutions) {
+    println("\n🏆 OPTIMIZATION SUCCESS: Fast execution with perfect accuracy!")
   }
 }
