@@ -212,7 +212,7 @@ With symmetry & 382,990 canonical & 14.4s & 167× faster vs 40+ min baseline \\
 
 \textbf{Note:} 7$\times$7 results show 382,990 canonical representatives. Total solutions would be approximately 382,990 $\times$ 8 $\approx$ 3.06 million if all orbits are complete, though actual count may vary due to solutions with internal symmetries.
 
-\textbf{Example of Internal Symmetry:} A solution where pieces are arranged symmetrically about the center (e.g., two Queens at (1,1) and (5,5), two Kings at (2,6) and (4,0)) would generate an orbit of size 4 instead of 8, as the 180° rotation produces an identical arrangement. Such cases explain why the simple multiplication may overestimate the total count.
+\textbf{Example of Internal Symmetry:} Consider a hypothetical 7$\times$7 solution where pieces are arranged symmetrically about the center (e.g., two Queens at (1,1) and (5,5), two Kings at (2,6) and (4,0)). Such an arrangement would generate an orbit of size 4 instead of 8, as the 180° rotation produces an identical configuration. While our 6$\times$6 dataset exhibits no such internal symmetries, larger boards may contain solutions with partial symmetries, explaining why simple multiplication may overestimate total counts.
 
 \subsection{Scalability Analysis}
 

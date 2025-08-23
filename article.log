@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.23)  23 AUG 2025 17:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.23)  23 AUG 2025 18:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -508,15 +508,15 @@ File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (47.19458pt too wide) in paragraph at lines 98--99
+Overfull \hbox (47.19458pt too wide) in paragraph at lines 100--101
 \T1/cmr/m/n/12 Initial im-ple-men-ta-tion us-ing pure func-tional pro-gram-ming
  with com-pre-hen-sive for-comprehensions.
  []
 
 [2]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 124.
- (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+put line 128.
+ [3] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang2.sty
@@ -524,67 +524,57 @@ File: lstlang2.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang3.sty
 File: lstlang3.sty 2023/02/27 1.9 listings language file
-) [3]
+)
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 158.
+nput line 164.
 
-Overfull \hbox (96.80261pt too wide) in paragraph at lines 162--163
+Overfull \hbox (96.80261pt too wide) in paragraph at lines 168--169
 [][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (54.51257pt too wide) in paragraph at lines 164--166
+Overfull \hbox (54.51257pt too wide) in paragraph at lines 170--172
 [][][][][][][][][][][][][][][] 
  []
 
-[4]
-Overfull \hbox (139.09265pt too wide) in paragraph at lines 214--215
+[4] [5]
+Overfull \hbox (139.09265pt too wide) in paragraph at lines 237--238
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (96.80261pt too wide) in paragraph at lines 222--223
+Overfull \hbox (96.80261pt too wide) in paragraph at lines 245--246
 [][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (75.6576pt too wide) in paragraph at lines 235--236
+Overfull \hbox (75.6576pt too wide) in paragraph at lines 258--259
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (54.51257pt too wide) in paragraph at lines 236--237
+Overfull \hbox (54.51257pt too wide) in paragraph at lines 259--260
 [][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[5] [6] [7] (./article.aux)
+[6] [7] [8] (./article.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `article.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `article.out':
-(rerunfilecheck)             Before: B74FE1657E2B270CE532AEAAC9E41294;3307
-(rerunfilecheck)             After:  6B9CE89C26CBD1C488D9CD6927631736;5368.
+Package rerunfilecheck Info: File `article.out' has not changed.
+(rerunfilecheck)             Checksum: 6B9CE89C26CBD1C488D9CD6927631736;5368.
  ) 
 Here is how much of TeX's memory you used:
- 13166 strings out of 476106
- 194648 string characters out of 5793933
- 1962975 words of memory out of 5000000
- 34891 multiletter control sequences out of 15000+600000
+ 13184 strings out of 476106
+ 194886 string characters out of 5793933
+ 1963975 words of memory out of 5000000
+ 34906 multiletter control sequences out of 15000+600000
  578094 words of font info for 88 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 75i,10n,79p,959b,1965s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.60
-0pk> </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.
+ 75i,10n,79p,915b,1171s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.60
+0pk> </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.
 600pk> </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm120
 0.600pk> </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/tcbx1
 200.600pk> </home/pakkio/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ect
@@ -606,10 +596,10 @@ usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on article.pdf (7 pages, 254842 bytes).
+Output written on article.pdf (8 pages, 260499 bytes).
 PDF statistics:
- 737 PDF objects out of 1000 (max. 8388607)
- 279 compressed objects within 3 object streams
- 108 named destinations out of 1000 (max. 500000)
- 121 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 792 PDF objects out of 1000 (max. 8388607)
+ 326 compressed objects within 4 object streams
+ 111 named destinations out of 1000 (max. 500000)
+ 225 words of extra memory for PDF output out of 10000 (max. 10000000)
 
