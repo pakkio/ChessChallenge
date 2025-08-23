@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "chesschallenge"
+version = "0.1.0"
+description = ""
+authors = ["Claudio Pacchiega <claudio.pacchiega@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.3.2"
+numpy = "^2.3.2"
+scikit-learn = "^1.7.1"
+matplotlib = "^3.10.5"
+seaborn = "^0.13.2"
+joblib = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
