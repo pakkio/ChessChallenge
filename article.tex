@@ -34,14 +34,14 @@ Algorithmic Innovation and Symmetry Elimination}
 \maketitle
 
 \begin{abstract}
-We present a comprehensive case study of algorithmic optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization over multiple iterations, we achieved extraordinary performance improvements: from an estimated 24+ hours for a 6$\times$6 board to 353ms (244,000$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—a problem previously considered computationally intractable. The key breakthrough was Phase 1 symmetry elimination, which reduced the solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. This work demonstrates how methodical algorithmic analysis, combined with modern AI-assisted development, can transform exponentially complex combinatorial problems into computationally feasible solutions.
+We present a comprehensive case study of algorithmic optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization over multiple iterations, we achieved extraordinary performance improvements: from a baseline of 20-24 seconds for a 6$\times$6 board to 353ms (68$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—previously requiring 40+ minutes with brute force approaches. The key breakthrough was Phase 1 symmetry elimination, which reduced the solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. This work demonstrates how methodical algorithmic analysis, combined with modern AI-assisted development, can transform exponentially complex combinatorial problems into computationally feasible solutions.
 \end{abstract}
 
 \section{Introduction}
 
 The chess piece placement problem belongs to the class of constraint satisfaction problems (CSP) with exponential complexity. Given a set of chess pieces and an $m \times n$ board, the challenge is to find all valid arrangements where no piece attacks another. This problem generalizes the classic N-Queens puzzle but introduces heterogeneous piece types with distinct attack patterns, significantly increasing computational complexity.
 
-Our investigation began with a baseline implementation that required estimated 20-24 seconds for a 6$\times$6 board, with 7$\times$7 boards projected to take 40+ minutes due to exponential growth in the search space. Through systematic optimization and the application of advanced algorithmic techniques, we achieved remarkable performance improvements that fundamentally changed the computational feasibility of this problem class.
+Our investigation began with a baseline implementation that required 20-24 seconds for a 6$\times$6 board, with 7$\times$7 boards projected to take 40+ minutes due to exponential growth in the search space. Through systematic optimization and the application of advanced algorithmic techniques, we achieved remarkable performance improvements that fundamentally changed the computational feasibility of this problem class.
 
 \section{Problem Formalization}
 
@@ -59,15 +59,17 @@ Our specific instance uses $P = \{K^2, Q^2, B^2, N^1\}$ on boards ranging from 6
 
 \subsection{Attack Pattern Formalization}
 
-Each piece type $p$ has an attack function $A_p(s, B) \rightarrow \mathcal{P}(B)$ that returns the set of squares attacked from position $s$ on board $B$:
+Each piece type $p$ has an attack function $A_p(s, S) \rightarrow \mathcal{P}(B)$ that returns the set of squares attacked from position $s=(x,y)$ given occupied squares $S$:
 
 \begin{align}
-A_K(s) &= \{(x \pm 1, y \pm 1) \cap B\} \\
-A_Q(s) &= A_R(s) \cup A_B(s) \\
-A_R(s) &= \{(x, y') : y' \neq y\} \cup \{(x', y) : x' \neq x\} \\
-A_B(s) &= \{(x \pm k, y \pm k) : k > 0\} \cap B \\
-A_N(s) &= \{(x \pm 2, y \pm 1), (x \pm 1, y \pm 2)\} \cap B
+A_K(s, S) &= \{(x \pm 1, y \pm 1), (x \pm 1, y), (x, y \pm 1)\} \cap B \\
+A_Q(s, S) &= A_R(s, S) \cup A_B(s, S) \\
+A_R(s, S) &= \text{ray-cast along rows/columns until first obstruction in } S \\
+A_B(s, S) &= \text{ray-cast along diagonals until first obstruction in } S \\
+A_N(s, S) &= \{(x \pm 2, y \pm 1), (x \pm 1, y \pm 2)\} \cap B \setminus S
 \end{align}
+
+Note: Ray-casting stops at the first occupied square encountered, implementing proper chess obstruction rules.
 
 \section{Development History and Performance Evolution}
 
@@ -110,13 +112,15 @@ Revolutionary optimization applying group theory to eliminate symmetric duplicat
 
 \subsection{Group Theory Application}
 
-The symmetry group of a square board is the dihedral group $D_4$ with 8 elements:
+For square boards ($m = n$), the symmetry group is the dihedral group $D_4$ with 8 elements:
 \begin{itemize}
 \item 4 rotations: $R_0$ (identity), $R_{90}$, $R_{180}$, $R_{270}$
 \item 4 reflections: $H$ (horizontal), $V$ (vertical), $D_1$, $D_2$ (diagonal)
 \end{itemize}
 
-For any valid solution $S$, the orbit $\mathcal{O}(S) = \{g \cdot S : g \in D_4\}$ contains up to 8 symmetric variants. Our algorithm computes only canonical representatives, reducing the solution space by a factor of $|D_4| = 8$.
+\textbf{Important:} For rectangular boards ($m \neq n$), only identity, 180° rotation, and axis-aligned reflections preserve the board structure, forming a smaller symmetry group.
+
+For any valid solution $S$, the orbit $\mathcal{O}(S) = \{g \cdot S : g \in D_4\}$ contains at most 8 symmetric variants (orbit size may be 1, 2, 4, or 8 depending on solution symmetries). Our algorithm computes canonical representatives for each orbit.
 
 \subsection{Canonical Form Algorithm}
 
@@ -138,15 +142,17 @@ For any valid solution $S$, the orbit $\mathcal{O}(S) = \{g \cdot S : g \in D_4\
 \subsection{Mathematical Correctness Proof}
 
 \begin{theorem}
-The symmetry elimination algorithm preserves solution completeness.
+The canonical form algorithm preserves solution completeness by selecting exactly one representative from each symmetry orbit.
 \end{theorem}
 
 \begin{proof}
-Let $\mathcal{S}$ be the set of all valid solutions and $\mathcal{C}$ be the set of canonical representatives. We prove bijection between $\mathcal{S}$ and $\mathcal{C} \times D_4$.
+Let $\mathcal{S}$ be the set of all valid solutions, $\mathcal{C}$ be the set of canonical representatives, and $G = D_4$ be the symmetry group.
 
-\textbf{Surjection:} For every $s \in \mathcal{S}$, there exists $c \in \mathcal{C}$ such that $s \in \mathcal{O}(c)$.
+\textbf{Completeness:} For every solution $s \in \mathcal{S}$, the canonical form $c = \min\{toString(g \cdot s) : g \in G\}$ is well-defined and $c \in \mathcal{C}$. By construction, $s$ can be recovered by applying some $g \in G$ to $c$.
 
-\textbf{Injection:} Our verification test confirms this by expanding all canonical forms and recovering exactly the original solution set: $|\mathcal{S}| = 23,752$ and $|\mathcal{C}| = 2,969$ with $23,752 = 2,969 \times 8$.
+\textbf{Uniqueness:} Each canonical form $c \in \mathcal{C}$ represents exactly one orbit $\mathcal{O}(c) = \{g \cdot c : g \in G\}$.
+
+\textbf{Experimental Validation:} For our 6$\times$6 instance, expanding all $|\mathcal{C}| = 2,969$ canonical forms yields exactly $|\mathcal{S}| = 23,752$ original solutions, with $23,752 = 2,969 \times 8$. This confirms that all orbits have size 8 (no solutions exhibit internal symmetries in this case).
 \end{proof}
 
 \section{Experimental Validation}
@@ -176,33 +182,48 @@ assert(expandedSolutions == originalSolutions) // Perfect match
 
 \begin{table}[h]
 \centering
-\caption{Comprehensive Performance Analysis}
+\caption{Comprehensive Performance Analysis (6$\times$6 board, 7 pieces)}
 \begin{tabular}{@{}llrrr@{}}
 \toprule
-Board Size & Method & Solutions & Time & Speedup \\
+Method & Solutions Found & Time & Speedup vs Baseline \\
 \midrule
-6$\times$6 & Original estimate & 23,752 & 24+ hours & 1.0× \\
-6$\times$6 & Functional (git) & 23,752 & 20-24s & 3,600-4,320× \\
-6$\times$6 & Parallel (git) & 23,752 & 8.7s & 9,932× \\
-6$\times$6 & Optimized (git) & 23,752 & 1.9s & 45,473× \\
-6$\times$6 & With symmetry & 2,969 & 353ms & \textbf{244,898×} \\
-\midrule
-7$\times$7 & Estimated original & - & 40+ min & - \\
-7$\times$7 & With symmetry & 382,990 & 14.4s & \textbf{167$\times$ faster} \\
+Functional baseline & 23,752 & 20-24s & 1.0× \\
+Parallel processing & 23,752 & 8.7s & 2.3-2.8× \\
+Object elimination & 23,752 & 1.9s & 10.5-12.6× \\
+Symmetry elimination & 2,969 canonical & 353ms & \textbf{57-68×} \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\textbf{Note:} Symmetry elimination finds 2,969 canonical forms representing 23,752 total solutions (2,969 × 8 = 23,752).
+
+\begin{table}[h]
+\centering
+\caption{7$\times$7 Board Performance}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Method & Solutions Found & Time & Improvement \\
+\midrule
+Projected baseline & - & 40+ min & - \\
+With symmetry & 382,990 canonical & 14.4s & 167× faster \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Note:} 7$\times$7 results show 382,990 canonical representatives. Total solutions would be approximately 382,990 $\times$ 8 $\approx$ 3.06 million if all orbits are complete, though actual count may vary due to solutions with internal symmetries.
 
 \subsection{Scalability Analysis}
 
 The exponential nature of the problem makes larger boards increasingly challenging. However, symmetry elimination fundamentally changes the scaling behavior:
 
 \begin{align}
-T_{original}(n) &\approx O(n^{2k} \cdot k!) \text{ where } k = \text{number of pieces} \\
-T_{symmetry}(n) &\approx O\left(\frac{n^{2k} \cdot k!}{8}\right) \text{ with } 8 \text{-way reduction}
+T_{original}(n) &\approx O((n^2)^k) \text{ where } k = 7 \text{ pieces, } n^2 \text{ board positions} \\
+T_{symmetry}(n) &\approx O\left(\frac{(n^2)^k}{|G|}\right) \text{ with symmetry group } |G| \leq 8
 \end{align}
 
-This 8× theoretical reduction, combined with reduced computational overhead from canonical form checking, explains the dramatic performance improvements observed.
+This theoretical reduction factor (up to 8× for square boards), combined with reduced computational overhead from canonical form checking and early pruning, explains the dramatic performance improvements observed.
+
+\textbf{Note:} The complexity involves multiset combinations since we have duplicate piece types (2 Kings, 2 Queens, 2 Bishops), not simple permutations.
 
 \section{Implementation Architecture}
 
@@ -229,7 +250,7 @@ private def placePiecesOptimized(pieces: List[Piece], m: Int, n: Int): Solutions
 
 \subsection{Symmetry Integration}
 
-Canonical form checking is integrated at the solution generation level:
+Canonical form checking is integrated at the solution generation level using thread-safe concurrent data structures:
 
 \begin{lstlisting}[language=Scala, caption=Symmetry-Aware Placement]
 private def getValidPlacements(piece: Piece, disposition: Set[PieceAtSlot], 
@@ -254,8 +275,8 @@ private def getValidPlacements(piece: Piece, disposition: Set[PieceAtSlot],
 Our optimization journey achieved extraordinary results:
 
 \begin{itemize}
-\item \textbf{6$\times$6 Board:} 24+ hours → 353ms (\textbf{244,898$\times$ speedup})
-\item \textbf{7$\times$7 Board:} 40+ minutes → 14.4s (\textbf{167$\times$ speedup})
+\item \textbf{6$\times$6 Board:} 20-24s baseline → 353ms (\textbf{57-68$\times$ speedup})
+\item \textbf{7$\times$7 Board:} 40+ minutes projected → 14.4s (\textbf{167$\times$ faster})
 \item \textbf{Solution Verification:} Perfect mathematical correctness maintained
 \item \textbf{Memory Efficiency:} 87\% reduction in object allocations
 \end{itemize}
@@ -285,9 +306,9 @@ Combined improvements could enable 8$\times$8 and larger boards with total speed
 
 \section{Conclusion}
 
-This case study demonstrates how systematic algorithmic optimization can transform computationally intractable problems into efficiently solvable ones. The key insight was recognizing that the chess piece placement problem exhibits 8-way symmetry, allowing us to reduce the solution space by an order of magnitude while maintaining mathematical correctness.
+This case study demonstrates how systematic algorithmic optimization can transform computationally challenging problems into efficiently solvable ones. The key insight was recognizing that the chess piece placement problem exhibits 8-way symmetry, allowing us to reduce the solution space by an order of magnitude while maintaining mathematical correctness.
 
-The optimization journey from 24+ hours to 353ms represents not just a performance improvement, but a fundamental change in the problem's computational feasibility. The 7$\times$7 board, previously requiring 40+ minutes, now solves in under 15 seconds, opening new possibilities for larger board sizes and more complex piece configurations.
+The optimization journey from 20-24 seconds to 353ms represents not just a performance improvement, but a fundamental change in the problem's computational feasibility. The 7$\times$7 board, previously requiring 40+ minutes, now solves in under 15 seconds, opening new possibilities for larger board sizes and more complex piece configurations.
 
 Our approach demonstrates the power of combining traditional algorithmic optimization with modern AI-assisted development tools. The complete git history provides verifiable evidence of each optimization step, ensuring reproducibility and eliminating concerns about algorithmic correctness.
 
