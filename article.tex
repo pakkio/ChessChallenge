@@ -41,8 +41,6 @@ We present a case study in combinatorial optimization applied to the chess piece
 
 The chess piece placement problem belongs to the class of constraint satisfaction problems (CSP) with exponential complexity. Given a set of chess pieces and an $m \times n$ board, the challenge is to find all valid arrangements where no piece attacks another. This problem generalizes the classic N-Queens puzzle but introduces heterogeneous piece types with distinct attack patterns, significantly increasing computational complexity.
 
-Our investigation began with a baseline implementation that required 20-24 seconds for a 6$\times$6 board, with 7$\times$7 boards projected to take 40+ minutes due to exponential growth in the search space. Through systematic optimization and the application of algorithmic techniques including symmetry elimination, we achieved substantial performance improvements that significantly improved the computational feasibility of this problem class.
-
 \section{Hardware Specifications}
 
 All experiments were conducted on a system with the following specifications:
@@ -130,6 +128,31 @@ Baseline functional & 21000 & 1.0× & 1200 & for-comprehensions \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Graphical Overview}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{performance_trend.png}
+\caption{Performance evolution across optimization phases (6$\times$6 board). 
+Logarithmic scale highlights exponential gap between baseline and symmetry elimination. 
+Figure placeholder: replace with actual plot.}
+\end{figure}
+
+\section{Threats to Validity}
+
+Despite extensive validation, several factors may affect results:
+
+\begin{itemize}
+\item \textbf{Hardware variability:} CPU turbo frequencies, OS scheduling and WSL overhead can cause small deviations.
+\item \textbf{JVM effects:} Garbage collection and JIT optimizations may shift timings across runs.
+\item \textbf{Symmetry assumptions:} While all 6$\times$6 solutions had orbit size 8, larger boards may contain partial symmetries, leading to smaller orbits.
+\item \textbf{Algorithmic trade-offs:} Canonicalization at leaf-level avoids false negatives but may miss early pruning opportunities.
+\end{itemize}
+
+\section{Conclusion}
+
+This case study demonstrates how systematic algorithmic optimization can transform computationally challenging problems into efficiently solvable ones, while also revealing fundamental limits through comprehensive exploration. The key breakthrough was recognizing that the chess piece placement problem exhibits group symmetries, allowing us to reduce the 6$\times$6 solution space by an order of magnitude while maintaining mathematical correctness.
 
 ---
 
