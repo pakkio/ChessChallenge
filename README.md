@@ -4,8 +4,8 @@
 Chess piece placement solver achieving extraordinary performance improvements through systematic algorithmic optimization. Finds all valid non-attacking arrangements of chess pieces on M×N boards.
 
 **Performance Achievement:**
-- 6×6 Board: 24+ hours → **353ms** (244,898× speedup) 
-- 7×7 Board: 40+ minutes → **14.4s** (167× speedup)
+- 6×6 Board: 24+ hours → **353ms** (244,898× speedup) - 2,969 canonical solutions
+- 7×7 Board: 40+ minutes → **14.4s** (167× speedup) - 382,990 canonical solutions  
 - Solution verification: Perfect mathematical correctness maintained
 
 ## Optimization Journey
@@ -14,7 +14,7 @@ Chess piece placement solver achieving extraordinary performance improvements th
 - **Theory**: Applied group theory (dihedral group D₄) to eliminate 8-way symmetric duplicates
 - **Implementation**: Canonical form detection using concurrent hash map
 - **Result**: 4.3× additional speedup while maintaining perfect correctness
-- **Verification**: 23,752 original solutions = 2,969 canonical forms × 8 symmetries
+- **Verification**: 23,752 original solutions = 2,969 canonical forms × 8 symmetries (6×6 board)
 
 ### Evolution Timeline
 1. **Functional Foundation** (20-24s) - Pure functional implementation  
