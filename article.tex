@@ -43,6 +43,20 @@ The chess piece placement problem belongs to the class of constraint satisfactio
 
 Our investigation began with a baseline implementation that required 20-24 seconds for a 6$\times$6 board, with 7$\times$7 boards projected to take 40+ minutes due to exponential growth in the search space. Through systematic optimization and the application of algorithmic techniques including symmetry elimination, we achieved substantial performance improvements that significantly improved the computational feasibility of this problem class.
 
+\section{Hardware Specifications}
+
+All experiments were conducted on a system with the following specifications:
+\begin{itemize}
+    \item CPU: 13th Gen Intel(R) Core(TM) i7-13620H (4 cores, 2 threads per core)
+    \item Memory: 12GB RAM (WSL environment with access to 32GB physical RAM)
+    \item GPU: NVIDIA GeForce RTX 4060 with 8GB VRAM
+    \item OS: Linux (Ubuntu) on WSL2
+    \item JVM: OpenJDK 21.0.8
+    \item Scala Version: 2.12.19
+\end{itemize}
+
+The availability of 8GB VRAM was a key factor in considering GPU acceleration, though our experiments revealed that the sequential nature of constraint satisfaction problems presents challenges for effective parallelization on GPU architectures. The experiments were run in a WSL2 environment, which provided access to the full system resources including the NVIDIA GPU through CUDA.
+
 \section{Problem Formalization}
 
 \subsection{Mathematical Definition}
