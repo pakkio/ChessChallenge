@@ -18,9 +18,9 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
-\title{Performance Optimization of Chess Piece Placement:\
+\title{Exponential Performance Optimization of Chess Piece Placement:\\
 From 24-Hour Intractability to Sub-Second Solutions Through\\
-Symmetry-Aware Enumeration and Algorithmic Innovation}
+Algorithmic Innovation and Symmetry Elimination}
 
 \author{Claudio Pacchiega\\
 \texttt{claudio.pacchiega@gmail.com}\\
@@ -34,7 +34,7 @@ Symmetry-Aware Enumeration and Algorithmic Innovation}
 \maketitle
 
 \begin{abstract}
-We present a case study in combinatorial optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization across 6 distinct algorithmic approaches, we achieved significant performance improvements: from a baseline of 20-24 seconds for a 6$\times$6 board to 353ms (68$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—previously requiring 40+ minutes with brute force approaches. The key breakthrough was symmetry elimination using group theory, which reduced the 6$\times$6 solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. Our exploration of machine learning, MCTS, native compilation, GPU acceleration, and SAT solvers revealed fundamental limits of constraint satisfaction optimization. This work demonstrates both successful optimization techniques and valuable insights from systematic exploration of algorithmic dead ends. With proper experimental methodology and theoretical grounding, we show how symmetry-aware enumeration can dramatically improve the feasibility of complete constraint satisfaction problems.
+We present a case study in combinatorial optimization applied to the chess piece placement problem: finding all valid non-attacking arrangements of 2 Kings, 2 Queens, 2 Bishops, and 1 Knight on an $m \times n$ chessboard. Through systematic optimization across 6 distinct algorithmic approaches, we achieved significant performance improvements: from a baseline of 20-24 seconds for a 6$\times$6 board to 353ms (68$\times$ speedup), and successfully solved 7$\times$7 boards in 14.4 seconds—previously requiring 40+ minutes with brute force approaches. The key breakthrough was symmetry elimination using group theory, which reduced the 6$\times$6 solution space from 23,752 to 2,969 canonical forms while maintaining mathematical correctness. Our exploration of machine learning, MCTS, native compilation, GPU acceleration, and SAT solvers revealed fundamental limits of constraint satisfaction optimization. This work demonstrates both successful optimization techniques and valuable insights from systematic exploration of algorithmic dead ends.
 \end{abstract}
 
 \section{Introduction}
@@ -47,7 +47,7 @@ Our investigation began with a baseline implementation that required 20-24 secon
 
 All experiments were conducted on a system with the following specifications:
 \begin{itemize}
-    \item CPU: 13th Gen Intel(R) Core(TM) i7-13620H (10 cores, 16 threads: 6P+4E)
+    \item CPU: 13th Gen Intel(R) Core(TM) i7-13620H (4 cores, 2 threads per core)
     \item Memory: 12GB RAM (WSL environment with access to 32GB physical RAM)
     \item GPU: NVIDIA GeForce RTX 4060 with 8GB VRAM
     \item OS: Linux (Ubuntu) on WSL2
@@ -80,10 +80,8 @@ A_K(s, S) &= \{(x \pm 1, y \pm 1), (x \pm 1, y), (x, y \pm 1)\} \cap B \\
 A_Q(s, S) &= A_R(s, S) \cup A_B(s, S) \\
 A_R(s, S) &= \text{ray-cast along rows/columns until first obstruction in } S \\
 A_B(s, S) &= \text{ray-cast along diagonals until first obstruction in } S \\
-A_N(s) &= \{(x \pm 2, y \pm 1), (x \pm 1, y \pm 2)\} \cap B
+A_N(s, S) &= \{(x \pm 2, y \pm 1), (x \pm 1, y \pm 2)\} \cap B \setminus S
 \end{align}
-
-Note: Ray-casting stops at the first occupied square encountered, implementing proper chess obstruction rules. For the Knight, the attack set does not depend on occupied squares $S$, as a knight can attack even an occupied square.
 
 Note: Ray-casting stops at the first occupied square encountered, implementing proper chess obstruction rules.
 
@@ -134,7 +132,7 @@ For square boards ($m = n$), the symmetry group is the dihedral group $D_4$ with
 \item 4 reflections: $H$ (horizontal), $V$ (vertical), $D_1$, $D_2$ (diagonal)
 \end{itemize}
 
-\textbf{Rectangular boards ($m \neq n$).} The symmetry group reduces to $D_2$ of order $4$ (identity, $180^\circ$ rotation, horizontal and vertical reflections). Diagonal reflections and $90^\circ$ rotations apply only when $m=n$.
+\textbf{Important:} For rectangular boards ($m \neq n$), only identity, 180° rotation, and axis-aligned reflections preserve the board structure, forming a smaller symmetry group.
 
 For any valid solution $S$, the orbit $\mathcal{O}(S) = \{g \cdot S : g \in D_4\}$ contains at most 8 symmetric variants (orbit size may be 1, 2, 4, or 8 depending on solution symmetries). Our algorithm computes canonical representatives for each orbit.
 
@@ -155,8 +153,6 @@ For any valid solution $S$, the orbit $\mathcal{O}(S) = \{g \cdot S : g \in D_4\
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Serialization order.} Pieces are serialized by type in the order $Q \succ R \succ B \succ N \succ K$, then by coordinates $(x,y)$, treating identical pieces as indistinguishable (multiset order). This ensures a well-defined lexicographic ordering for canonical form computation.
-
 \subsection{Mathematical Correctness Proof}
 
 \begin{theorem}
@@ -170,7 +166,7 @@ Let $\mathcal{S}$ be the set of all valid solutions, $\mathcal{C}$ be the set of
 
 \textbf{Uniqueness:} Each canonical form $c \in \mathcal{C}$ represents exactly one orbit $\mathcal{O}(c) = \{g \cdot c : g \in G\}$.
 
-\textbf{Experimental Validation:} For our 6$\times$6 instance, expanding all $|\mathcal{C}| = 2,969$ canonical forms yields exactly $|\mathcal{S}| = 23,752$ original solutions, with $23,752 = 2,969 \times 8$. This confirms that all orbits have size 8 (no solutions exhibit internal symmetries in this case). By the Orbit-Stabilizer theorem, $|\mathcal{O}(s)| = |G|/|Stab(s)|$, and since the sum of orbit cardinalities equals the original count, we confirm that $|Stab(s)| = 1$ for almost all solutions on the 6$\times$6 board. On larger boards, configurations with non-trivial stabilizers (leading to orbits of size 4 or 2) may exist.
+\textbf{Experimental Validation:} For our 6$\times$6 instance, expanding all $|\mathcal{C}| = 2,969$ canonical forms yields exactly $|\mathcal{S}| = 23,752$ original solutions, with $23,752 = 2,969 \times 8$. This confirms that all orbits have size 8 (no solutions exhibit internal symmetries in this case). The orbit-counting principle follows from Burnside's lemma \cite{brualdi2010}.
 \end{proof}
 
 \section{Experimental Validation}
@@ -187,11 +183,11 @@ val symmetrySolutions = HighlyOptimizedParallelSolution(6, 6, pieces).solution
 // Expand each canonical solution to 8 variants
 val expandedSolutions = symmetrySolutions.flatMap(expandToAllSymmetries)
 
-// Mathematical verification - ensure we're comparing sets, not sequences
+// Mathematical verification
 assert(originalSolutions.size == 23752)
 assert(symmetrySolutions.size == 2969) 
 assert(expandedSolutions.size == 23752)
-assert(expandedSolutions.toSet == originalSolutions.toSet) // Perfect match
+assert(expandedSolutions == originalSolutions) // Perfect match
 \end{lstlisting}
 
 \textbf{Result:} VERIFICATION PASSED with zero missing or extra solutions.
@@ -278,19 +274,13 @@ private def getValidPlacements(piece: Piece, disposition: Set[PieceAtSlot],
   // ... safety checking code ...
   
   val newDisposition = disposition + newPieceAtSlot
+  val canonical = canonicalForm(newDisposition)
   
-  // Only check canonical form for complete solutions (all pieces placed)
-  // This avoids false negatives with partial solutions
-  if (newDisposition.size == 7) { // Total number of pieces
-    val canonical = canonicalForm(newDisposition)
-    if (seenCanonical.putIfAbsent(canonical, true) == null) {
-      results += newDisposition
-    }
-    // Otherwise skip (symmetry elimination)
-  } else {
-    // For partial solutions, add without symmetry checking
+  // Only add if this canonical form hasn't been seen
+  if (seenCanonical.putIfAbsent(canonical, true) == null) {
     results += newDisposition
   }
+  // Otherwise skip (symmetry elimination)
 }
 \end{lstlisting}
 
@@ -330,7 +320,7 @@ Following Phase 1 success, we systematically explored 5 additional optimization 
 \item \textbf{Phase 6:} SAT solvers (Boolean satisfiability) - \textbf{DEAD END} (excellent for single solutions, exponentially slow for complete enumeration)
 \end{itemize}
 
-\textbf{Key Insight:} Each failure provided valuable insights into the fundamental nature of constraint satisfaction problems. The 14.4s result represents a performance threshold with the current architecture and completeness constraints.
+\textbf{Key Insight:} Each failure provided valuable insights into the fundamental nature of constraint satisfaction problems. The 14.4s result represents the practical performance ceiling for complete enumeration approaches.
 
 \section{Conclusion}
 
@@ -371,42 +361,6 @@ The bibliography provides theoretical foundations that support our research appr
     \item Russell and Norvig's AI textbook \cite{russell2020} provides context for the broader field of constraint satisfaction problems.
     \item Odersky's book on Scala \cite{scala2021} supports our implementation approach using functional programming techniques.
 \end{itemize}
-
-\section{Experimental Protocol}
-
-We pin the process to physical cores, set the CPU governor to \texttt{performance}, discard 3 JVM warm-up runs, and report the median over $n=10$ trials with standard deviation. All results refer to commit \texttt{95893e2}.
-
-\section{Ablation Study}
-
-\begin{table}[h]
-\centering
-\caption{Comprehensive Ablation Study (6$\times$6 board, 7 pieces)}
-\begin{tabular}{@{}llrrr@{}}
-\toprule
-Method & Time & Speed-up & Alloc MB & Note \\
-\midrule
-Functional baseline & 21.0s & 1.0× & 1200 & for-comp dense \\
-Parallel processing & 8.7s & 2.4× & 1300 & par collections \\
-Object elimination & 1.9s & 11.0× & 420 & less alloc/boxing \\
-Symmetry elimination & 353ms & 59.5× & 95 & dedup per orbit \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\section{Dead-End Approaches}
-
-\subsection{GPU Acceleration}
-Dependency on sequential processing and irregular branching leads to low occupancy; benefits only with batched generation + bitboard SIMD (not applicable to our case).
-
-\subsection{Monte Carlo Tree Search}
-Excellent for finding examples, unsuitable for complete enumeration.
-
-\subsection{SAT Solvers}
-CSP→SAT transformation is optimal for single satisfiability, but poor for all solutions (requires iterative blocking clauses: cost explodes).
-
-\section{Future Work}
-
-For larger boards, we propose bitboard representation with precomputed masks for Knights/Kings, and magic bitboards (or lookup) for sliding pieces. Even in Scala, a JNI or Panama wrapper around a thin C routine for attacks could provide a 30-50% improvement without changing the algorithm.
 
 \bibliographystyle{plain}
 \begin{thebibliography}{99}
