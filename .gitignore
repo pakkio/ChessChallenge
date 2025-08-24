@@ -23,3 +23,8 @@ target/
 # OS artifacts
 .DS_Store
 Thumbs.db
+*.aux
+*.out
+*.pdf
+*.bbl
+*.blg
