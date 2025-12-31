@@ -1,0 +1,35 @@
+============================================================
+CHESS CHALLENGE BENCHMARK
+============================================================
+
+[Warmup] Running both versions once...
+[Warmup] Complete
+
+------------------------------------------------------------
+OPTIMIZED VERSION (HighlyOptimizedParallelSolution)
+------------------------------------------------------------
+Solutions found: 2969
+Time: 350.9ms
+Board objects created: 13175
+
+------------------------------------------------------------
+ULTRA OPTIMIZED VERSION (UltraOptimizedSolution)
+------------------------------------------------------------
+Solutions found: 2969
+Time: 123.6ms
+Board objects created: 1
+
+------------------------------------------------------------
+ORIGINAL VERSION (Solution)
+------------------------------------------------------------
+Solutions found: 23752
+Time: 29586.3ms
+Board objects created: 782885
+
+============================================================
+SUMMARY
+============================================================
+Original:  29586.3ms | Solutions: 23752
+Optimized: 350.9ms | Solutions: 2969 | 84.3x faster
+Ultra:     123.6ms | Solutions: 2969 | 239.3x faster
+============================================================
