@@ -1,5 +1,7 @@
 # Chess Challenge Performance Analysis & Future Enhancements
 
+> **Note (November 2026): historical document.** It predates `UltraOptimizedSolution`, which produces the 7×7 canonical forms in about 1 s (see README), so "14.4 seconds is the practical limit" below no longer holds. The "68×" figure is the 6×6 ratio (24 s → 353 ms), not a 7×7 result. On 7×7 the exact total is 3,063,828 solutions, not 8 × 382,990 (see `OrbitSpec`).
+
 ## Current State (2025)
 
 ### Baseline Performance

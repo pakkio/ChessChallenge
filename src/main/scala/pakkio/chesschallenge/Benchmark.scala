@@ -3,7 +3,7 @@ package pakkio.chesschallenge
 import java.io.PrintWriter
 
 object Benchmark extends App {
-  val pw = new PrintWriter("/home/pakkio/my/ChessChallenge/benchmark_results.txt")
+  val pw = new PrintWriter("benchmark_results.txt") // relative: the old absolute path only existed on one machine
   def log(s: String) = { println(s); pw.println(s); pw.flush() }
   
   log("=" * 60)

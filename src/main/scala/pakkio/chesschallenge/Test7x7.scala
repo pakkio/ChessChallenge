@@ -26,14 +26,17 @@ object Test7x7 {
     
     println(s"Found $result unique solutions (canonical forms) in ${durationMs}ms")
     println(s"Time: ${durationMinutes.formatted("%.2f")} minutes")
-    println(s"Estimated full solution count (with symmetries): ${result * 8}")
-    
-    // Compare against estimated 40+ minutes from the enhancement plan
+    // 8 x canonical is only an upper bound: symmetric solutions have orbits smaller than 8
+    // (on 7x7, 23 orbits of size 4), so the exact total is 3,063,828. See OrbitSpec.
+    println(s"Upper bound on the full solution count (8 x canonical): ${result * 8}")
+
+    // The original has never been timed on 7x7: 40 minutes is an ESTIMATE from the enhancement
+    // plan, so the ratio below is indicative only and must not be quoted as a measured speedup.
     val estimatedOriginalTime = 40 * 60 * 1000.0 // 40 minutes in ms
     val speedupFactor = estimatedOriginalTime / durationMs
-    
-    println(s"Expected original time (without symmetry): ~40 minutes")
-    println(s"Actual speedup achieved: ${speedupFactor.formatted("%.1f")}x faster")
+
+    println(s"Estimated original time (NOT measured): ~40 minutes")
+    println(s"Ratio against that estimate (indicative only): ${speedupFactor.formatted("%.1f")}x")
     
     if (durationMinutes < 10) {
       println("✅ SUCCESS: 7x7 is now computationally feasible!")
