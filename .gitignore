@@ -27,3 +27,6 @@ Thumbs.db
 *.out
 *.bbl
 *.blg
+
+# Coursier launcher binary (88 MB), was committed by mistake
+/cs
